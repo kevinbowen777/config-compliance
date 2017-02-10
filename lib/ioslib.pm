@@ -1,3 +1,18 @@
+#!/usr/bin/perl
+# -------------------------------------------------------------------------- #
+#
+# Name: ioslib.pl
+# Purpose: This library is used for parsing Cisco device configs
+# Compatible:
+# Requirements:
+#
+# Version: 1.0
+# Author: Kevin Bowen kevin.bowen@gmail.com
+#
+# Original source:
+# Updated: 20170210
+#
+# -------------------------------------------------------------------------- #
 package ioslib;
 use strict;
 use warnings;
