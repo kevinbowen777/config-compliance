@@ -1,0 +1,8 @@
+!
+! Policy 2 Tacacs Configuration
+tacacs-server host 153.6.140.227
+tacacs-server host 172.27.75.27
+tacacs-server host 157.23.55.14
+tacacs-server directed-request
+~ /tacacs-server key/
+~ /enable secret/

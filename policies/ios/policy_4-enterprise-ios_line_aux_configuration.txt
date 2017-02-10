@@ -1,0 +1,4 @@
+!
+! Policy 4 Line Aux
+line aux 0
+ login authentication default

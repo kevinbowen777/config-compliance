@@ -1,0 +1,4 @@
+!
+! Policy 3 Line Console
+line con 0
+ logging synchronous

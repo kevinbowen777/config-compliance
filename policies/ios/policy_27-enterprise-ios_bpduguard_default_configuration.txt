@@ -1,0 +1,12 @@
+! Name: policy_27-enterprise-ios_bpduguard_default_configuration.txt
+!
+! Location: YoYoDyne Industries
+! Platform: Cisco IOS
+! Version: 1.00
+! Type: BPDUGUARD Configuration
+! Summary: Policy is based on IOS-Standard_v1.00, Section 1.x
+! Source:
+! Created: 20170210
+! Last modified: 20170210
+!
+spanning-tree portfast bpduguard default

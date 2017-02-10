@@ -1,0 +1,4 @@
+!
+! Policy 10 Identify Information for the Site, Contact and Chassis
+~ /snmp-server location/
+~ /snmp-server contact/

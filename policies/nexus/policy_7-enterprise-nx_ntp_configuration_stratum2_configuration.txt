@@ -1,0 +1,4 @@
+!
+! Policy 7 DNS
+ip domain-name net.yoyodyne.com
+ip name-server 192.168.20.1 192.168.20.2 use-vrf management

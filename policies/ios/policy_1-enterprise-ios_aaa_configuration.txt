@@ -1,0 +1,14 @@
+!
+! Policy 1 AAA Configuration
+aaa new-model
+aaa authentication password-prompt LocalPass>
+aaa authentication login default group tacacs+ enable 
+aaa authorization exec default group tacacs+ if-authenticated
+aaa authorization commands 0 default group tacacs+ if-authenticated
+aaa authorization commands 1 default group tacacs+ if-authenticated
+aaa authorization commands 15 default group tacacs+ if-authenticated
+aaa authorization config-commands
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+aaa accounting connection default start-stop group tacacs+
+aaa session-id common

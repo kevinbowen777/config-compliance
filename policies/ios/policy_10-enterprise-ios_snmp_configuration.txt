@@ -1,0 +1,9 @@
+!
+! Policy 10 Snmp Configuration
+snmp-server community XxXxXxXxX RO 79
+snmp-server community XxXxXxXxX RW 79
+snmp-server host 192.168.1.1 XxXxXxXxX
+snmp-server host 192.168.1.2 XxXxXxXxX
+snmp-server ifindex persist
+snmp-server trap link ietf
+logging snmp-authfail

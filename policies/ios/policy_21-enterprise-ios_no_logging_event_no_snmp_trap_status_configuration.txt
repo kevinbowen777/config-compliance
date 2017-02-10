@@ -1,0 +1,3 @@
+!Layer2 only
+no logging event link-status 
+no snmp trap link-status
