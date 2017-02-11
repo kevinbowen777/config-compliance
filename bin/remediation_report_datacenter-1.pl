@@ -32,7 +32,7 @@ open my $FILE, '<', "$file" or die $file;
 while (<FILE>) { my $lines .= $_ }
 close $FILE;
 
-foreach my $line (split(/\n/, $lines)) {
+foreach my $line (split(/\n/, my $lines)) {
 	$line =~ s/\s+$//;
 	$config = "";
 	# Print "$line\n";
@@ -47,7 +47,7 @@ foreach my $line (split(/\n/, $lines)) {
 	print $output;
  } elsif($config =~ /feature tacacs/m){
  	# Print "SMARTSNX 1.00 $line\n";
-	$output = `smartsnx_1.00.pl $line`;
+	my $output = `smartsnx_1.00.pl $line`;
 	print $output;
  } elsif($config =~ /IOS XR/m){
 	print "IOS XR $line\n";

@@ -2,22 +2,22 @@
 # -------------------------------------------------------------------------- #
 #
 # Name: smartsnx_1.13.pl
-# Purpose: This script checks configurations in /tftpboot direction for NXOS v1.13 policy violations
+# Purpose: This script checks configurations in /tftpboot direction
+# for NXOS v1.00 policy violations
 # Compatible:
 # Requirements:
 #
 # Version: 1.0
-# Author: Kevin Bowen kevin.bowen@disney.com
+# Author: Kevin Bowen kevin.bowen@gmail.com
 # 
 # Original source:
-# Updated: 05062015
-# Changelog:
-# 20150903_01 BSJ Comment out Policy 27, per conversation with Scott Teza
-# 20151030_01 BSJ Comment out Policy 5, per email from Scott Teza
+# Updated: 20170210
 #
 # -------------------------------------------------------------------------- 
 #
 #Load Libraries
+use FindBin;
+use lib "$FindBin::Bin/../lib";;
 use ioslib;
 use POSIX qw(strftime);
 use File::stat;
@@ -40,7 +40,7 @@ close $FILE;
 
 my $diff ="";
 
-$output ="$file,";
+my $output ="$file,";
 
 my @int_list = &interface_list($config);
 
@@ -69,10 +69,10 @@ $diff4 = &strip_comments($diff4);
 print "$date,$timestamp,$file,NXOS,4 - MGMT Routing,$output4$diff4\n";
 
 #Policy 5 NTP
-#$diff5 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy5.txt"),$config);
-#$output5 = &pass_check($diff5);
-#$diff5 = &strip_comments($diff5);
-#print "$date,$timestamp,$file,NXOS,5 - NTP,$output5$diff5\n";
+$diff5 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy5.txt"),$config);
+$output5 = &pass_check($diff5);
+$diff5 = &strip_comments($diff5);
+print "$date,$timestamp,$file,NXOS,5 - NTP,$output5$diff5\n";
 
 #Policy 7 DNS
 $diff7 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy7.txt"),$config);
@@ -124,46 +124,46 @@ $diff14 = &strip_comments($diff14);
 print "$date,$timestamp,$file,NXOS,14 - LOOPBACK,$output14$diff14\n";
 
 #Policy 15 Int Security
-#$diff15 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy15.txt"),$config);
+$diff15 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy15.txt"),$config);
 $output15 = "PASS,";
-#$diff15 = &strip_comments($diff15);
+$diff15 = &strip_comments($diff15);
 print "$date,$timestamp,$file,NXOS,15 - INT SEC,$output15$diff15\n";
 
 #Policy 16 Rapid ACL
-#$diff16 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy16.txt"),$config);
+$diff16 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy16.txt"),$config);
 $output16 = "PASS,";
-#$diff16 = &strip_comments($diff16);
+$diff16 = &strip_comments($diff16);
 print "$date,$timestamp,$file,NXOS,16 - RAPID ACL,$output16$diff16\n";
 
 #Policy 17 SNMP Logging
-#$diff17 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy17.txt"),$config);
+$diff17 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy17.txt"),$config);
 $output17 = "PASS,";
-#$diff17 = &strip_comments($diff17);
+$diff17 = &strip_comments($diff17);
 print "$date,$timestamp,$file,NXOS,17 - SNMP LOG,$output17$diff17\n";
 
 ## Policy 18 Interface Description
-#$diff18 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy18.txt"),$config);
+$diff18 = &ios_config_global_lines(&open_file("/scripts/configcheck/policies/nexus1.13/policy18.txt"),$config);
 $output18 = "PASS,";
-#$diff18 = &strip_comments($diff18);
+$diff18 = &strip_comments($diff18);
 print "$date,$timestamp,$file,NXOS,18 - INT DESCR,$output18$diff18\n";
 
 ## Policy 19 Interface Security
-#$diff19 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy19.txt"),$config,@int_list);
-#$output19 .= &pass_check($diff19);
-#$output19 ="PASS,";
-#$diff19 = &strip_comments($diff19);
-#print "$date,$timestamp,$file,NXOS,19 - INT SEC,$output19$diff19\n";
+$diff19 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy19.txt"),$config,@int_list);
+$output19 .= &pass_check($diff19);
+$output19 ="PASS,";
+$diff19 = &strip_comments($diff19);
+print "$date,$timestamp,$file,NXOS,19 - INT SEC,$output19$diff19\n";
 
 ## Policy 20 IP Security
-#$diff20 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy19.txt"),$config,@int_list);
+$diff20 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy19.txt"),$config,@int_list);
 $output20 ="PASS,";
-#$diff20 = &strip_comments($diff20);
+$diff20 = &strip_comments($diff20);
 print "$date,$timestamp,$file,NXOS,20 - IP SEC,$output20$diff20\n";
 
 ## Policy 21 Logging
-#$diff21 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy19.txt"),$config,@int_list);
+$diff21 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy19.txt"),$config,@int_list);
 $output21 ="PASS,";
-#$diff21 = &strip_comments($diff21);
+$diff21 = &strip_comments($diff21);
 print "$date,$timestamp,$file,NXOS,21 - LOGGING,$output21$diff21\n";
 
 ## Policy 22 Line Console
@@ -180,23 +180,22 @@ $diff23 = &strip_comments($diff23);
 print "$date,$timestamp,$file,NXOS,23 - VTY,$output23$diff23\n";
 
 ## Policy 24 CoPP Policy
-#$diff24 = &ios_config_acls(&open_file("/scripts/configcheck/policies/nexus1.13/policy26.txt"),$config);
-#$output24 = &pass_check($diff24);
-#$diff24 = &strip_comments($diff24);
-#print "$date,$timestamp,$file,NXOS,24 - COPP,$output24$diff24\n";
+$diff24 = &ios_config_acls(&open_file("/scripts/configcheck/policies/nexus1.13/policy26.txt"),$config);
+$output24 = &pass_check($diff24);
+$diff24 = &strip_comments($diff24);
+print "$date,$timestamp,$file,NXOS,24 - COPP,$output24$diff24\n";
 
 ## Policy 25 Logging
-#$diff25 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy25.txt"),$config,@int_list);
+$diff25 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy25.txt"),$config,@int_list);
 $output25 ="PASS,";
-#$diff25 = &strip_comments($diff25);
+$diff25 = &strip_comments($diff25);
 print "$date,$timestamp,$file,NXOS,25 - MULTICAST,$output25$diff25\n";
 
-# Change 20150903_01
 ## Policy 27 BPDUGUARD
-#$diff27 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy_27-enterprise-nxos_bpduguard_configuration.txt"),$config,@int_list);
-#$output27 ="PASS,";
-#$diff27 = &strip_comments($diff27);
-#print "$date,$timestamp,$file,NXOS,27 - BPDUGUARD,$output27$diff27\n";
+$diff27 = &ios_config_all_interfaces(&open_file("/scripts/configcheck/policies/nexus1.13/policy_27-enterprise-nxos_bpduguard_configuration.txt"),$config,@int_list);
+$output27 ="PASS,";
+$diff27 = &strip_comments($diff27);
+print "$date,$timestamp,$file,NXOS,27 - BPDUGUARD,$output27$diff27\n";
 
 sub strip_comments {
 
@@ -206,8 +205,7 @@ sub strip_comments {
 	my $config = "";
         foreach my $line (split(/\n/, $new_config)) {
                 if ($line =~ s/^\s*(!)/$1/) {
-                  #nothing
-		}else{
+		} else{
                         $config .= "$line\n";
                 }
         }

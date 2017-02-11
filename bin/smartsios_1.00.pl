@@ -1,22 +1,22 @@
 #!/usr/bin/perl
 # -------------------------------------------------------------------------- #
 #
-# Name: smartsios_4.966.pl
-# Purpose: This script checks configurations in /tftpboot direction for IOS v4.966 policy violations
+# Name: smartsios_1.00.pl
+# Purpose: This script checks configurations in /tftpboot direction
+# for IOS v1.00 policy violations
 # Compatible:
-# Requirements:
+# Requirements: ioslib.pm
 #
 # Version: 1.0
-# Author: Kevin Bowen kevin.bowen@disney.com
+# Author: Kevin Bowen kevin.bowen@gmail.com
 # 
 # Original source:
-# Updated: 05062015
-# Changelog:
-# 20150903_01 BSJ Comment out Policy 27, per conversation with Scott Teza
-# 20151030_01 BSJ Comment out Policy 6, per email from Scott Teza
+# Updated: 20170210
+#
 # -------------------------------------------------------------------------- 
 #
-#Load Libraries
+use FindBin;
+use lib "$FindBin::Bin/../lib";;
 use ioslib;
 use POSIX qw(strftime);
 use File::stat;
