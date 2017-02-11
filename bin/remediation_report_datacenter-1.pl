@@ -9,49 +9,49 @@
 #
 # Version: 1.0
 # Author: Kevin Bowen kevin.bowen@gmail.com
-# Updated:
 #
 # Updated: 20170210
 #
 # -------------------------------------------------------------------------- #
 
-#use strict;
-#use warnings;
-#Load Libraries
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../lib";;
 use ioslib;
 use POSIX qw(strftime);
 
-$date = strftime "%m%d%y",localtime;
+my $date = strftime "%m%d%y",localtime;
 my $config;
-my $file = "/scripts/configcheck/device-lists/device_list.txt";
+my $file = "/devices/device_list.txt";
 
 print"Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
 
-#Open device-list file
-open FILE, "$file" or die $file;
-while (<FILE>) { $lines .= $_ }
-close FILE;
+# Open device-list file
+open my $FILE, '<', "$file" or die $file;
+while (<FILE>) { my $lines .= $_ }
+close $FILE;
 
 foreach my $line (split(/\n/, $lines)) {
 	$line =~ s/\s+$//;
 	$config = "";
-	#print "$line\n";
-	#Open config file
-	open FILE, "/tftpboot/online_devices/$line";
+	# Print "$line\n";
+	# Open config file
+	open my $FILE, '<', "../devices/$line";
 	while (<FILE>) { $config .= $_ }
 	close FILE;
 
  if($config =~ /NVRAM/m || $config =~ /version 12/m || $config =~ /version 15/m){
-	#print "SMARTSIOS 4.96  $line\n";
-	$output = `/scripts/configcheck/nap7_smartsios_4.96.pl $line`;
+	# Print "SMARTSIOS 1.00  $line\n";
+	my $output = `smartsios_1.00.pl $line`;
 	print $output;
- }elsif($config =~ /feature tacacs/m){
- 	#print "SMARTSNX 1.13 $line\n";
-	$output = `/scripts/configcheck/nap7_smartsnx_1.13.pl $line`;
+ } elsif($config =~ /feature tacacs/m){
+ 	# Print "SMARTSNX 1.00 $line\n";
+	$output = `smartsnx_1.00.pl $line`;
 	print $output;
- }elsif($config =~ /IOS XR/m){
+ } elsif($config =~ /IOS XR/m){
 	print "IOS XR $line\n";
- }else{
+ } else{
 	print "UNKNOWN $line-confg\n";
  }
 }
