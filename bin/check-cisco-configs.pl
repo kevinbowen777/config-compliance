@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # -------------------------------------------------------------------------- #
 #
-# Name: cisco-compliance_report.pl
+# Name: check-cisco-configs.pl
 # Purpose: Pulls device information from: ../devices/device_list.txt
 #		and start running policy scripts for IOS and NX-OS devices
 # Compatible: n/a
@@ -64,5 +64,5 @@ foreach my $line (split(/\n/, $lines)) {
  }
 }
 
-#`/bin/chmod 644 /scripts/reports/datacenter-1/datacenter-1_device_remediation_$date.txt`;
+# `/bin/chmod 644 ../reports/cisco-compliance_report-$date.txt`;
 
