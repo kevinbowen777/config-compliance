@@ -1,3 +1,0 @@
-!Policy 13 Boot Commands
-~ /boot kickstart bootflash:/
-~ /boot system bootflash:/

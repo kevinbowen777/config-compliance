@@ -1,4 +1,0 @@
-!
-! Policy 17 RCMD
-ip rcmd remote-host netadmin 153.7.254.114 netadmin
-ip rcmd rsh-enable

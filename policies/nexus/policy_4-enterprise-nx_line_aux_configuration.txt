@@ -1,4 +1,0 @@
-!
-! Policy 4 Default route for mgmt
-vrf context management 
-~ /ip route 0.0.0.0\/0/

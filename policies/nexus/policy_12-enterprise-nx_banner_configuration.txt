@@ -1,5 +1,0 @@
-!Policy 12 SSH Configuration
-~ /hostname/
-~ /ip domain-name/
-ssh key rsa 2048
-feature ssh

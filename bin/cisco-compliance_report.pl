@@ -1,21 +1,22 @@
 #!/usr/bin/perl
 # -------------------------------------------------------------------------- #
 #
-# Name: remediation_report_datacenter1.pl
-# Purpose: This script pulls device information from:
-# /scripts/configcheck/device-lists/online_device_list.txt
+# Name: cisco-compliance_report.pl
+# Purpose: Pulls device information from: ../devices/device_list.txt
+#		and start running policy scripts for IOS and NX-OS devices
 # Compatible: n/a
 # Requirements: ioslib.pm
 #
-# Version: 1.0
+# Version: 1.2.1
 # Author: Kevin Bowen kevin.bowen@gmail.com
 #
-# Updated: 20170210
+# Updated: 20190919
 #
 # -------------------------------------------------------------------------- #
 
-use strict;
-use warnings;
+use 5.14.0;
+# use strict;
+# use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";;
 use ioslib;
@@ -23,36 +24,43 @@ use POSIX qw(strftime);
 
 my $date = strftime "%m%d%y",localtime;
 my $config;
-my $file = "/devices/device_list.txt";
+my $devices = '../devices/device_list.txt';
+my $lines;
 
 print"Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
 
-# Open device-list file
-open my $FILE, '<', "$file" or die $file;
-while (<FILE>) { my $lines .= $_ }
-close $FILE;
+# Open device-list devices
+# open my $devices, '<', "$devices" or die "Could not open $devices: $!";
+open FILE, "$devices" or die "Could not open $devices $!";
 
-foreach my $line (split(/\n/, my $lines)) {
+while (<FILE>) {
+	$lines .= $_;
+}
+
+close FILE;
+
+foreach my $line (split(/\n/, $lines)) {
 	$line =~ s/\s+$//;
 	$config = "";
-	# Print "$line\n";
-	# Open config file
-	open my $FILE, '<', "../devices/$line";
+	print "==============================\n";
+	# print "$line\n";
+	# Open config devices
+	open FILE, '<', "../devices/$line" or die "Could not open $line $!";;
 	while (<FILE>) { $config .= $_ }
-	close FILE;
+	close devices;
 
  if($config =~ /NVRAM/m || $config =~ /version 12/m || $config =~ /version 15/m){
 	# Print "SMARTSIOS 1.00  $line\n";
-	my $output = `smartsios_1.00.pl $line`;
+	my $output = `smartsios_1.2.1.pl $line`;
 	print $output;
  } elsif($config =~ /feature tacacs/m){
  	# Print "SMARTSNX 1.00 $line\n";
-	my $output = `smartsnx_1.00.pl $line`;
+	my $output = `smartsnx_1.2.1.pl $line`;
 	print $output;
  } elsif($config =~ /IOS XR/m){
 	print "IOS XR $line\n";
  } else{
-	print "UNKNOWN $line-confg\n";
+	print "UNKNOWN $line\n";
  }
 }
 
