@@ -1,0 +1,12 @@
+!
+! Policy 15 Basic Services
+service timestamps log date time msec localtime show-timezone
+service timestamps debug datetime msec localtime show-timezone
+service password-encryption
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service udp-small-servers
+no service tcp-small-servers
+no service finger
+no service pad
+service sequence-numbers

@@ -1,0 +1,3 @@
+!
+! Policy 20 IP Security
+no ip source-route

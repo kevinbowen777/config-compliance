@@ -1,0 +1,7 @@
+!
+! Policy 23 IP Security
+no ip bootp server 
+no ip http server 
+no ip http secure-server 
+no ip source-route 
+no ip identd

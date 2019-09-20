@@ -1,0 +1,4 @@
+!
+! Policy 22 Line Console
+line con 
+ exec-timeout 10

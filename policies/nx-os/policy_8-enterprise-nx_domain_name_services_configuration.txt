@@ -1,0 +1,26 @@
+!
+! Policy 8 SNMP
+!role name v3_ciscogrp
+!rule 1 permit read
+!role name v3_voicegrp
+!rule 1 permit read
+!role name v3_disneygrp
+!rule 1 permit read
+!role name v3_nmsgroup
+!rule 1 permit read-write
+!role name v3_netcoolgrp
+!rule 1 permit read-write
+!username admin password 5 [REDACTED] role network-admin
+!username ciscousr1 password 5 [REDACTED] role v3_ciscogrp
+!username voiceusr1 password 5 [REDACTED] role v3_voicegrp
+!username NMSusr1 password 5 [REDACTED] role v3_nmsgroup
+!
+!snmp-server location {location}
+!snmp-server globalEnforcePriv
+!snmp-server user admin network-admin auth md5 [REDACTED] priv [REDACTED] localizedkey
+!snmp-server user NMSusr1 v3_nmsgroup auth sha [REDACTED] priv aes-128 [REDACTED] localizedkey
+!snmp-server user ciscousr1 v3_ciscogrp auth sha [REDACTED] priv aes-128 [REDACTED] localizedkey
+!snmp-server user voiceusr1 v3_voicegrp auth sha [REDACTED] priv aes-128 [REDATED] localizedkey
+!snmp-server user netcoolusr3 auth sha [REDACTED] priv aes-128 [REDACTED] localizedkey engineID 80:0:1:88:80:0:57:94:2:51:80:0:4
+!snmp-server user netcoolusr2 auth sha [REDACTED] priv aes-128 [REDACTED] localizedkey engineID 80:0:1:88:80:48:94:0:5:0:0:0:4
+!snmp-server user netcoolusr1 auth sha [REDACTED] priv aes-128 [REDACTED] localizedkey engineID 80:0:1:88:80:0:16:67:26:0:0:8:51:0:0:0:0

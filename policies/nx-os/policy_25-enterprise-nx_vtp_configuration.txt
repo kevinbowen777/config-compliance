@@ -1,0 +1,3 @@
+!
+! Policy 25 VTP
+vtp mode transparent
