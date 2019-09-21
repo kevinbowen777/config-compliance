@@ -1,4 +1,5 @@
 inc/
+bin/*test.pl
 devices/*.cfg
 devices/*.dist
 reports/cisco_remediation-all-092*

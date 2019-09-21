@@ -21,29 +21,31 @@
 
 use POSIX qw(strftime);
 
-$date = strftime "%m%d%y",localtime;
+$report_date = strftime "%Y%m%d",localtime;
 
 # All Data Centers Report
-`check-cisco-configs.pl >../reports/cisco_remediation-all-$date.csv`;
-`/bin/chmod 644 ../reports/cisco_remediation-all-$date.csv`;
-`/bin/chgrp users ../reports/cisco_remediation-all-$date.csv`;
+print "Printing all data centers compliance report...\n";
+
+`check-cisco-configs.pl >../reports/cisco_remediation-all-$report_date.csv`;
+`/bin/chmod 644 ../reports/cisco_remediation-all-$report_date.csv`;
+`/bin/chgrp users ../reports/cisco_remediation-all-$report_date.csv`;
 
 # Data Center 1 Report
-# `cisco-compliance_report.pl >../reports/cisco_remediation-dc1-$date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-dc1-$date.csv`;
-# `/bin/chgrp localusr ../reports/cisco_remediation-dc1-$date.csv`;
+# `cisco-compliance_report.pl >../reports/cisco_remediation-dc1-$report_date.csv`;
+# `/bin/chmod 644 ../reports/cisco_remediation-dc1-$report_date.csv`;
+# `/bin/chgrp localusr ../reports/cisco_remediation-dc1-$report_date.csv`;
 
 # Data Center 2 Report
-# `cisco-compliance_report.pl >../reports/cisco_remediation-dc2-$date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-dc2-$date.csv`;
-# `/bin/chgrp localusr ../reports/cisco_remediation-dc2-$date.csv`;
+# `cisco-compliance_report.pl >../reports/cisco_remediation-dc2-$report_date.csv`;
+# `/bin/chmod 644 ../reports/cisco_remediation-dc2-$report_date.csv`;
+# `/bin/chgrp localusr ../reports/cisco_remediation-dc2-$report_date.csv`;
 
 # All Dev devices Report
-# `cisco-compliance_report.pl >../reports/cisco_remediation-prod-$date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-prod-$date.csv`;
-# `/bin/chgrp localusr ../reports/cisco_remediation-prod-$date.csv`;
+# `cisco-compliance_report.pl >../reports/cisco_remediation-prod-$report_date.csv`;
+# `/bin/chmod 644 ../reports/cisco_remediation-prod-$report_date.csv`;
+# `/bin/chgrp localusr ../reports/cisco_remediation-prod-$report_date.csv`;
 
 # All Mgmt Devices
-# `cisco-compliance_report.pl >../reports/cisco_remediation-corp-$date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-corp-$date.csv`;
-# `/bin/chgrp localusr ../reports/cisco_remediation-corp-$date.csv`;
+# `cisco-compliance_report.pl >../reports/cisco_remediation-corp-$report_date.csv`;
+# `/bin/chmod 644 ../reports/cisco_remediation-corp-$report_date.csv`;
+# `/bin/chgrp localusr ../reports/cisco_remediation-corp-$report_date.csv`;
