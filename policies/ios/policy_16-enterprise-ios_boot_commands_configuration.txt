@@ -1,3 +1,0 @@
-!
-! Policy 16 boot system flash
-~ /boot system/

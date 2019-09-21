@@ -1,0 +1,7 @@
+!
+! Policy 18 - NX-OS Loopbacks
+!
+ip tacacs source-interface loopback0 
+ip tftp source-interface Loopback0 
+logging source-interface Loopback0
+snmp-server trap-source Loopback0

@@ -1,0 +1,15 @@
+!
+! Policy 02 NX-OS TACACS Configuration
+!
+feature privilege 
+feature tacacs+ 
+~ /tacacs-server key 7/
+tacacs-server host 153.6.140.227 
+tacacs-server host 172.27.75.27 
+tacacs-server host 157.23.55.14 
+aaa group server tacacs+ tacacs-servers 
+server 153.6.140.227 
+server 172.27.75.27 
+server 157.23.55.14 
+source-interface mgmt0
+

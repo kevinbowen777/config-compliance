@@ -1,0 +1,4 @@
+!
+! Policy 20 - IOS Rapid ACL
+!       Layer2 only
+ip access-group dos in

@@ -1,0 +1,5 @@
+!
+! Policy 11 - NX-OS SNMP Identity
+!
+~ /snmp-server location/
+~ /snmp-server contact/

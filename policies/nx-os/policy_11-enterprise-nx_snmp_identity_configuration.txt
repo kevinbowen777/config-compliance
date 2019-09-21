@@ -1,4 +1,0 @@
-!Policy 11 Banner login
-!=============================================================
-~ /Computer System Terms of Use/
-~ /This system is only for authorized use.  Using this system/

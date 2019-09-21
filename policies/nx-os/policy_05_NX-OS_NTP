@@ -1,0 +1,7 @@
+!
+! Policy 05 - NX-OS NTP
+!
+ntp server 192.168.20.3 use-vrf management 
+ntp server 192.168.20.4 use-vrf management 
+ntp server 192.168.20.5 use-vrf management 
+ntp server 192.168.20.6 use-vrf management 

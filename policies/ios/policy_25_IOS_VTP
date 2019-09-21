@@ -1,0 +1,4 @@
+!
+! Policy 25 - IOS VTP
+!
+vtp mode transparent

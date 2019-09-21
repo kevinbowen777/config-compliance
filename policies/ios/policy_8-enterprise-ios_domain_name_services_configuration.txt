@@ -1,5 +1,0 @@
-!
-! Policy 8 DNS
-ip domain-name net.yoyodyne.com
-ip name-server 192.168.20.1
-ip name-server 192.168.20.2

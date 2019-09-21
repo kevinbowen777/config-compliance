@@ -1,0 +1,4 @@
+!
+! Policy 20 - NX-OS Source Route
+!
+no ip source-route

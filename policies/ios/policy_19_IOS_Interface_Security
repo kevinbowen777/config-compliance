@@ -1,0 +1,11 @@
+!
+! Policy 19 - IOS Interface Security
+!
+no ip redirects
+no ip proxy-arp
+no ip unreachables
+no ip directed-broadcast
+no ip mask-reply
+no mop enabled
+ip route-cache flow
+no setup express

@@ -1,0 +1,8 @@
+!
+! Policy 03 - NX-OS MGMT Interface
+!
+interface mgmt0 
+ ~ /description/
+ vrf member management 
+ no cdp enable 
+ ~ /ip address /

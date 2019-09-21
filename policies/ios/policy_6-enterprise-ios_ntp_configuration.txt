@@ -1,8 +1,0 @@
-!
-! Policy 6 NTP Configuration
-ntp server 192.168.20.3 
-ntp server 192.168.20.4 
-ntp server 192.168.20.5 
-ntp server 192.168.20.6 
-!ntp source Loopback0 
-ntp update-calendar

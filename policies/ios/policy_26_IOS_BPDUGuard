@@ -1,0 +1,4 @@
+!
+! Policy 26 - IOS BPDUGuard Configuration
+!
+spanning-tree portfast bpduguard

@@ -1,4 +1,0 @@
-!
-! Policy 21 Logging
-logging server 172.27.75.31 use-vrf management
-logging server 153.6.140.100 use-vrf management

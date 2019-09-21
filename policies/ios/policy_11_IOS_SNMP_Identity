@@ -1,0 +1,6 @@
+!
+! Policy 11 - IOS SNMP Identity
+!
+~ /snmp-server location/
+~ /snmp-server contact/
+~ /snmp-server chassis-id/

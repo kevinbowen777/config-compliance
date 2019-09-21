@@ -1,0 +1,5 @@
+!
+! Policy 13 - IOS SSH
+!
+~ /boot kickstart bootflash:/
+~ /boot system bootflash:/

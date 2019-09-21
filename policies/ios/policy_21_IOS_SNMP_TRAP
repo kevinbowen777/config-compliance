@@ -1,0 +1,5 @@
+!
+! Policy 21 - IOS SNMP Trap
+!
+no logging event link-status 
+no snmp trap link-status

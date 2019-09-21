@@ -1,0 +1,5 @@
+!
+! Policy 16 - NX-OS Boot Commands
+!
+~ /boot kickstart bootflash:/
+~ /boot system bootflash:/

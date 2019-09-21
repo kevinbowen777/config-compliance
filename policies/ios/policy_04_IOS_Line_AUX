@@ -1,0 +1,5 @@
+!
+! Policy 04 - IOS Line AUX
+!
+line aux 0
+ login authentication default

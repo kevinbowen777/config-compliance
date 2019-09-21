@@ -1,0 +1,4 @@
+!
+! Policy 25 - NX-OS VTP
+!
+vtp mode transparent

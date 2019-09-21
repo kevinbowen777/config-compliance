@@ -1,0 +1,5 @@
+!
+! Policy 03 - IOS Line Console
+!
+line con 0
+ logging synchronous

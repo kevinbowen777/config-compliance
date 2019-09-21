@@ -1,0 +1,8 @@
+!
+! Policy 01 - NX-OS AAA Configuration
+!
+aaa authentication login default group tacacs-servers
+aaa authentication login console group tacacs-servers
+aaa authorization config-commands default group tacacs-servers local
+aaa authorization commands default group tacacs-servers
+aaa accounting default group tacacs-servers

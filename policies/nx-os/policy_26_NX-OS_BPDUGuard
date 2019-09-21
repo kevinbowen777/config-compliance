@@ -1,0 +1,4 @@
+!
+! Policy 26 - NX-OS BPDUGuard
+!
+spanning-tree port type edge bpduguard

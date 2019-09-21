@@ -1,2 +1,0 @@
-!Layer2 only
-ip access-group dos in

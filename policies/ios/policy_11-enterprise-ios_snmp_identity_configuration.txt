@@ -1,5 +1,0 @@
-!
-! Policy 11 snmp configuration
-~ /snmp-server location/
-~ /snmp-server contact/
-~ /snmp-server chassis-id/

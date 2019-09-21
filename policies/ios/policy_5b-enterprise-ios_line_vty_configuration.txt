@@ -1,3 +1,0 @@
-! VTY 5 15
-line vty 5 15
- ~ /password/

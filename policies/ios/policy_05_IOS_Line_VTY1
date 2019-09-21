@@ -1,0 +1,6 @@
+!
+! Policy 05 - IOS Line VTY 0 4
+!
+! VTY 0 4
+line vty 0 4
+ ~ /password/

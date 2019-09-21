@@ -1,8 +1,0 @@
-!
-! Policy 24 Logging
-logging source-interface Loopback0
-logging 153.6.140.100
-logging 172.27.75.31
-logging 172.27.75.22
-no logging console
-logging buffered

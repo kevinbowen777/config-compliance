@@ -1,0 +1,5 @@
+!
+! Policy 04 - NX-OS MGMT Default Route
+!
+vrf context management 
+~ /ip route 0.0.0.0\/0/
