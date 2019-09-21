@@ -1,3 +1,6 @@
 inc/
 devices/*.cfg
 devices/*.dist
+reports/cisco_remediation-all-092*
+reports/.~lock*
+TODO

@@ -14,9 +14,9 @@
 #
 # -------------------------------------------------------------------------- #
 
-use 5.14.0;
-# use strict;
-# use warnings;
+# use 5.14.0;
+use strict;
+use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";;
 use ioslib;
@@ -29,8 +29,7 @@ my $lines;
 
 print"Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
 
-# Open device-list devices
-# open my $devices, '<', "$devices" or die "Could not open $devices: $!";
+# Open list of devices
 open FILE, "$devices" or die "Could not open $devices $!";
 
 while (<FILE>) {
@@ -42,13 +41,13 @@ close FILE;
 foreach my $line (split(/\n/, $lines)) {
 	$line =~ s/\s+$//;
 	$config = "";
-	print "==============================\n";
-	# print "$line\n";
-	# Open config devices
+	
+	# Open device configuration files 
 	open FILE, '<', "../devices/$line" or die "Could not open $line $!";;
 	while (<FILE>) { $config .= $_ }
-	close devices;
+	close $devices;
 
+ # Check device platforms - IOS, NX-OS, IOS XR
  if($config =~ /NVRAM/m || $config =~ /version 12/m || $config =~ /version 15/m){
 	# Print "SMARTSIOS 1.00  $line\n";
 	my $output = `smartsios_1.2.1.pl $line`;
@@ -63,6 +62,3 @@ foreach my $line (split(/\n/, $lines)) {
 	print "UNKNOWN $line\n";
  }
 }
-
-# `/bin/chmod 644 ../reports/cisco-compliance_report-$date.txt`;
-
