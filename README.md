@@ -9,6 +9,8 @@
     A collection of perl scripts that checks local Cisco configuration files
 	against user managed policy templates.
 
+![](images/config-compliance-report_sample.png)
+
 ## Usage #
 
    TBD
