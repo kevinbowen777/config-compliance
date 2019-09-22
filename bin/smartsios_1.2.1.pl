@@ -17,15 +17,22 @@
 
 # use strict;
 use warnings;
+
+use Cwd;
+use English;
+use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../lib";;
-use ioslib;
 use POSIX qw(strftime);
 use File::stat;
 
-my $cfgfiles = '/home/kbowen/dev/sandbox/config-compliance/devices';
+use ioslib;
+
+my $abs_path = Cwd::abs_path($PROGRAM_NAME);
+my $dirname = File::Basename::dirname($abs_path);
+my $cfgfiles = "$dirname/../devices";
 my $date = strftime "%m/%d/%y",localtime;
-my $policy_dir = "/home/kbowen/dev/sandbox/config-compliance/policies/ios";
+my $policy_dir = "$dirname/../policies/ios";
 
 #Command line input
 my ($file) = @ARGV;

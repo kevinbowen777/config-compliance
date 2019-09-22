@@ -21,36 +21,41 @@
 
 use strict;
 use warnings;
+
+use Cwd;
+use English;
+use File::Basename;
 use POSIX qw(strftime);
 
-my $bin_dir = "/home/kbowen/dev/sandbox/config-compliance/bin";
+my $abs_path = Cwd::abs_path($PROGRAM_NAME);
+my $dirname = File::Basename::dirname($abs_path);
 my $report_date = strftime "%Y%m%d-%H:%M",localtime;
-my $report_dir = "/home/kbowen/dev/sandbox/config-compliance/reports";
+my $report_dir = "$dirname/../reports";
 
 # All Data Centers Report
 print "Processing compliance report for all data centers...\n";
 
-`$bin_dir/check-cisco-configs.pl >$report_dir/cisco_remediation-all-$report_date.csv`;
+`$dirname/check-cisco-configs.pl >$report_dir/cisco_remediation-all-$report_date.csv`;
 `/bin/chmod 644 $report_dir/cisco_remediation-all-$report_date.csv`;
 `/bin/chgrp users $report_dir/cisco_remediation-all-$report_date.csv`;
 
 print "Completed processing of compliance report.\n";
 # Data Center 1 Report
-# `cisco-compliance_report.pl >../reports/cisco_remediation-dc1-$report_date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-dc1-$report_date.csv`;
-# `/bin/chgrp users ../reports/cisco_remediation-dc1-$report_date.csv`;
+# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-dc1-$report_date.csv`;
+# `/bin/chmod 644 $report_dir/cisco_remediation-dc1-$report_date.csv`;
+# `/bin/chgrp users $report_dir/cisco_remediation-dc1-$report_date.csv`;
 
 # Data Center 2 Report
-# `cisco-compliance_report.pl >../reports/cisco_remediation-dc2-$report_date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-dc2-$report_date.csv`;
-# `/bin/chgrp users ../reports/cisco_remediation-dc2-$report_date.csv`;
+# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-dc2-$report_date.csv`;
+# `/bin/chmod 644 $report_dir/cisco_remediation-dc2-$report_date.csv`;
+# `/bin/chgrp users $report_dir/cisco_remediation-dc2-$report_date.csv`;
 
 # All Dev devices Report
-# `cisco-compliance_report.pl >../reports/cisco_remediation-prod-$report_date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-prod-$report_date.csv`;
-# `/bin/chgrp users ../reports/cisco_remediation-prod-$report_date.csv`;
+# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-prod-$report_date.csv`;
+# `/bin/chmod 644 $report_dir/cisco_remediation-prod-$report_date.csv`;
+# `/bin/chgrp users $report_dir/cisco_remediation-prod-$report_date.csv`;
 
 # All Mgmt Devices
-# `cisco-compliance_report.pl >../reports/cisco_remediation-corp-$report_date.csv`;
-# `/bin/chmod 644 ../reports/cisco_remediation-corp-$report_date.csv`;
-# `/bin/chgrp users ../reports/cisco_remediation-corp-$report_date.csv`;
+# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-corp-$report_date.csv`;
+# `/bin/chmod 644 $report_dir/cisco_remediation-corp-$report_date.csv`;
+# `/bin/chgrp users $report_dir/cisco_remediation-corp-$report_date.csv`;
