@@ -15,20 +15,24 @@
 #
 # }}}----------------------------------------------------------------------- # 
 
+# use strict;
+use warnings;
+
 use FindBin;
 use lib "$FindBin::Bin/../lib";;
 use ioslib;
 use POSIX qw(strftime);
 use File::stat;
 
-$date = strftime "%m/%d/%y",localtime;
-$policy_dir = "../policies/nx-os";
+my $cfgfiles = '/home/kbowen/dev/sandbox/config-compliance/devices';
+my $date = strftime "%m/%d/%y",localtime;
+my $policy_dir = "/home/kbowen/dev/sandbox/config-compliance/policies/nx-os";
 
 #Command line input
 my ($file) = @ARGV;
 
 #Open config file
-open $FILE, "../devices/$file" or die "file not found $file";
+open $FILE, "$cfgfiles/$file" or die "file not found $file";
 
 #File timestamp
 $timestamp = stat($FILE)->mtime;
@@ -148,6 +152,8 @@ print "$date,$timestamp,$file,NX-OS,17 - RCMD,$output17$diff17\n";
 
 # Policy 18 - NX-OS Loopback
 $diff18 = &ios_config_global_lines(&open_file("$policy_dir/policy_18_NX-OS_Loopback"),$config);
+# Current batch of NX-OS do not use loopback. Ignore test.
+# $output18 = &pass_check($diff18);
 $output18 = "PASS,";
 $diff18 = &strip_comments($diff18);
 print "$date,$timestamp,$file,NX-OS,18 - Loopback,$output18$diff18\n";
@@ -224,7 +230,8 @@ sub strip_comments {
                 }
         }
 	
-	$config =~ s{P3nc1lB0x}{<redacted>};
+	# This will strip SNMP Community strings from the report
+	$config =~ s{3ye1nTh3Sky}{<REDACTED>}g;
 	$config =~ tr{\n}{ };
         return "$config";
 }

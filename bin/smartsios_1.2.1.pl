@@ -15,20 +15,23 @@
 #
 # }}} ---------------------------------------------------------------------- #
 
+# use strict;
+use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";;
 use ioslib;
 use POSIX qw(strftime);
 use File::stat;
 
-$date = strftime "%m/%d/%y",localtime;
-$policy_dir = "../policies/ios";
+my $cfgfiles = '/home/kbowen/dev/sandbox/config-compliance/devices';
+my $date = strftime "%m/%d/%y",localtime;
+my $policy_dir = "/home/kbowen/dev/sandbox/config-compliance/policies/ios";
 
 #Command line input
 my ($file) = @ARGV;
 
 #Open config file
-open $FILE, "../devices/$file" or die "file not found $file";
+open $FILE, "$cfgfiles/$file" or die "file not found $file";
 
 # File timestamp
 $timestamp = stat($FILE)->mtime;
@@ -40,7 +43,7 @@ close $FILE;
 
 my $diff ="";
 
-$output ="$file,";
+my $output ="$file,";
 
 my @int_list = &interface_list($config);
 
@@ -159,37 +162,39 @@ print "$date,$timestamp,$file,IOS,17 - RCMD,$output17$diff17\n";
 
 # Policy 18 - IOS Loopbacks
 if ($config =~ /interface Loopback0/im && $file !~ /-sw/){
- $diff18 = &ios_config_global_lines(&open_file("$policy_dir/policy_18_IOS_Loopback"),$config);
+ my $diff18 = &ios_config_global_lines(&open_file("$policy_dir/policy_18_IOS_Loopback"),$config);
  $output18 = &pass_check($diff18);
  $diff18 = &strip_comments($diff18);
+ print "$date,$timestamp,$file,IOS,18 - Loopback,$output18$diff18\n";
 }else{
- $output18 ="PASS,";
+ my $diff18 = "";
+ my $output18 ="PASS,";
+ print "$date,$timestamp,$file,IOS,18 - Loopback,$output18$diff18\n";
 }
-print "$date,$timestamp,$file,IOS,18 - LOOPBACK,$output18$diff18\n";
 
 # Policy 19 - IOS Interface Security
-$diff119 = &ios_config_all_interfaces(&open_file("$policy_dir/policy_19_IOS_Interface_Security"),$config,@int_list);
-$output119 .= &pass_check($diff119);
+$diff19 = &ios_config_global_lines(&open_file("$policy_dir/policy_19_IOS_Interface_Security"),$config);
+$output19 .= &pass_check($diff19);
 $output19 ="PASS,";
-$diff119 = &strip_comments($diff119);
+$diff19 = &strip_comments($diff19);
 print "$date,$timestamp,$file,IOS,19 - Interface Security,$output19$diff19\n";
 
 # Policy 20 - IOS Rapid  ACL 
-$diff120 = &ios_config_all_interfaces(&open_file("$policy_dir/policy_20_IOS_Rapid_ACL"),$config,@int_list);
+$diff20 = &ios_config_global_lines(&open_file("$policy_dir/policy_20_IOS_Rapid_ACL"),$config);
 $output20 ="PASS,";
-$diff120 = &strip_comments($diff120);
+$diff20 = &strip_comments($diff20);
 print "$date,$timestamp,$file,IOS,20 - Rapid ACL,$output20$diff20\n";
 
 # Policy 21 - IOS SNMP TRAP
-$diff121 = &ios_config_all_interfaces(&open_file("$policy_dir/policy_21_IOS_SNMP_TRAP"),$config,@int_list);
+$diff21 = &ios_config_global_lines(&open_file("$policy_dir/policy_21_IOS_SNMP_TRAP"),$config);
 $output21 ="PASS,";
-$diff121 = &strip_comments($diff121);
+$diff21 = &strip_comments($diff21);
 print "$date,$timestamp,$file,IOS,21 - SNMP Trap,$output21$diff21\n";
 
 # Policy 22 - IOS Interface Description
-$diff122 = &ios_config_all_interfaces(&open_file("$policy_dir/policy_22_IOS_Interface_Description"),$config,@int_list);
+$diff22 = &ios_config_global_lines(&open_file("$policy_dir/policy_22_IOS_Interface_Description"),$config);
 $output22 ="PASS,";
-$diff122 = &strip_comments($diff122);
+$diff22 = &strip_comments($diff22);
 print "$date,$timestamp,$file,IOS,22 - Interface Description,$output22$diff22\n";
 
 # Policy 23 - IOS IP Security
@@ -235,9 +240,9 @@ sub strip_comments {
                         $config .= "$line\n";
                 }
         }
-	
-	$config =~ s{P3nc1lB0x}{<redacted>};
-	$config =~ s{N3w$Pap3r}{<redacted>};
+	# This will strip SNMP Community strings from the report
+	$config =~ s{Alle5Gut}{<REDACTED>}g;
+	$config =~ s{\$3rvIceNoW!}{<REDACTED>}g;
 	$config =~ tr{\n}{ };
         return "$config";
 }

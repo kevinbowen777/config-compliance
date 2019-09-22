@@ -1,5 +1,7 @@
 !
-! Policy 10 - SNMP Identity
+! Policy 10 - SNMP
 !
-~ /snmp-server location/
-~ /snmp-server contact/
+snmp-server host 10.209.128.100 traps version 2c 3ye1nTh3Sky 
+snmp-server host 10.209.128.100 use-vrf management
+snmp-server host 10.209.128.101 traps version 2c 3ye1nTh3Sky 
+snmp-server host 10.209.128.101 use-vrf management
