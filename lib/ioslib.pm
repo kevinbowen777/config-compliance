@@ -1,18 +1,20 @@
 #!/usr/bin/perl
-# -------------------------------------------------------------------------- #
+
+# {{{ ---------------------------------------------------------------------- #
 #
 # Name: ioslib.pl
 # Purpose: This library is used for parsing Cisco device configs
 # Compatible:
 # Requirements:
 #
-# Version: 1.0
+# Version: 1.0.1
 # Author: Kevin Bowen kevin.bowen@gmail.com
 #
 # Original source:
-# Updated: 20170210
+# Updated: 20190922
 #
-# -------------------------------------------------------------------------- #
+# }}}----------------------------------------------------------------------- #
+
 package ioslib;
 use strict;
 use warnings;
@@ -24,12 +26,12 @@ our @EXPORT = qw(
 	config_lines
 	nest nest_mismatch
 	int_array_nest
+	vlan_priorities
 	int_vlan_nest
 	open_file
 	pass_check
 	interface_list
 	ios_config_all_interfaces
-	vlan_priorities
 );
 
 sub ios_config_global_lines {
