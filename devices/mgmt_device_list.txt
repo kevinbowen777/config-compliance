@@ -1,0 +1,3 @@
+dc1-svc-rt004.mgmt.cfg
+dc1-svc-rt003.mgmt.cfg
+dc1-svc-vp001.mgmt.cfg
