@@ -29,9 +29,10 @@ use File::stat;
 use ioslib;
 
 my $abs_path = Cwd::abs_path($PROGRAM_NAME);
+my $date = strftime "%m/%d/%y",localtime;
 my $dirname = File::Basename::dirname($abs_path);
 my $cfgfiles = "$dirname/../devices";
-my $date = strftime "%m/%d/%y",localtime;
+
 my $ios_policy_dir = "$dirname/../policies/ios";
 
 #Command line input
