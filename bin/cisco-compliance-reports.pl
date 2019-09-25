@@ -30,32 +30,41 @@ use POSIX qw(strftime);
 my $abs_path = Cwd::abs_path($PROGRAM_NAME);
 my $dirname = File::Basename::dirname($abs_path);
 my $report_date = strftime "%Y%m%d-%H:%M",localtime;
+my $device_dir = "$dirname/../devices";
 my $report_dir = "$dirname/../reports";
+my $date = strftime "%m/%d/%y %H:%M" ,localtime;
 
-# All Data Centers Report
-print "Processing compliance report for all data centers...\n";
+# All Cisco Devices Report
+print "Processing compliance report for all Cisco devices...\n";
 
 `$dirname/check-cisco-configs.pl >$report_dir/cisco_remediation-all-$report_date.csv`;
 `/bin/chmod 644 $report_dir/cisco_remediation-all-$report_date.csv`;
 `/bin/chgrp users $report_dir/cisco_remediation-all-$report_date.csv`;
 
-print "Completed processing of compliance report.\n";
+print "Completed processing of compliance report for all devices - $date.\n";
+
 # Data Center 1 Report
-# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-dc1-$report_date.csv`;
-# `/bin/chmod 644 $report_dir/cisco_remediation-dc1-$report_date.csv`;
-# `/bin/chgrp users $report_dir/cisco_remediation-dc1-$report_date.csv`;
+print "Processing compliance report for DC1 data center...\n";
+
+`$dirname/check-cisco-configs.pl $device_dir/dc1_device_list.txt >$report_dir/dc1/cisco_remediation-dc1-$report_date.csv`;
+`/bin/chmod 644 $report_dir/dc1/cisco_remediation-dc1-$report_date.csv`;
+`/bin/chgrp users $report_dir/dc1/cisco_remediation-dc1-$report_date.csv`;
+print "Completed processing of compliance report for DC1 devices - $date.\n";
 
 # Data Center 2 Report
-# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-dc2-$report_date.csv`;
-# `/bin/chmod 644 $report_dir/cisco_remediation-dc2-$report_date.csv`;
-# `/bin/chgrp users $report_dir/cisco_remediation-dc2-$report_date.csv`;
+print "Processing compliance report for DC2 data center...\n";
 
-# All Dev devices Report
-# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-prod-$report_date.csv`;
-# `/bin/chmod 644 $report_dir/cisco_remediation-prod-$report_date.csv`;
-# `/bin/chgrp users $report_dir/cisco_remediation-prod-$report_date.csv`;
+`$dirname/check-cisco-configs.pl $device_dir/dc2_device_list.txt >$report_dir/dc2/cisco_remediation-dc2-$report_date.csv`;
+`/bin/chmod 644 $report_dir/dc2/cisco_remediation-dc2-$report_date.csv`;
+`/bin/chgrp users $report_dir/dc2/cisco_remediation-dc2-$report_date.csv`;
+print "Completed processing of compliance report for DC2 devices - $date.\n";
 
-# All Mgmt Devices
-# `$dirname/cisco-compliance_report.pl >$report_dir/cisco_remediation-corp-$report_date.csv`;
-# `/bin/chmod 644 $report_dir/cisco_remediation-corp-$report_date.csv`;
-# `/bin/chgrp users $report_dir/cisco_remediation-corp-$report_date.csv`;
+# All Prod devices Report
+print "Processing compliance report for Production devices...\n";
+
+`$dirname/check-cisco-configs.pl $device_dir/prod_device_list.txt >$report_dir/prod/cisco_remediation-prod-$report_date.csv`;
+`/bin/chmod 644 $report_dir/prod/cisco_remediation-prod-$report_date.csv`;
+`/bin/chgrp users $report_dir/prod/cisco_remediation-prod-$report_date.csv`;
+print "Completed processing of compliance report for all Prod devices - $date.\n";
+
+print "Completed processing of all compliance reports - $date.\n";
