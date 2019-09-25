@@ -1,0 +1,41 @@
+config-compliance project tree
+.
+├── bin
+│   ├── check-cisco-configs.pl
+│   ├── cisco-compliance-reports.pl
+│   ├── create_device_list.sh
+│   ├── smartsios_1.2.1.pl
+│   └── smartsnx_1.2.1.pl
+|
+├── devices
+│   ├── dc1_device_list.txt
+│   ├── device_list.txt
+│   ├── prod_device_list.txt
+│   └── ...
+|
+├── lib
+│   └── ioslib.pm
+|
+├── policies
+│   ├── ios
+│   │   ├── policy_01_IOS_AAA
+│   │   ├── ...
+│   │   ├── policy_12_IOS_Banner
+│   │   ├── ...
+│   │   ├── policy_24_IOS_Logging
+|   |   └── ...
+|   |
+│   └── nx-os
+|       └── ...
+|
+└── reports
+    ├── dc1
+    │   ├── cisco_remediation-dc1-20190924-13:11.csv
+    │   └── cisco_remediation-dc1-20190924-17:17.csv
+    ├── dc2
+    ├── mgmt
+    ├── prod
+    |
+    ├── cisco_remediation-all-20190921-18:15.csv
+    ├── cisco_remediation-all-20190921-19:43.csv
+    └── ...
