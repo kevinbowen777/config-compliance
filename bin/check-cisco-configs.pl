@@ -31,8 +31,19 @@ my $date = strftime "%m/%d/%y",localtime;
 my $config;
 my $dirname = File::Basename::dirname($abs_path);
 my $cfgfiles = "$dirname/../devices";
-my $devices = "$cfgfiles/device_list.txt";
+# my $devices = "$cfgfiles/device_list.txt";
 my $lines;
+my ($file) = @ARGV;
+
+my ($devices) = @ARGV;
+
+if (not defined $devices) {
+	$devices = "$cfgfiles/device_list.txt";
+	print "The default  '$devices' list.\n";
+}
+if (defined $devices) {
+	print "The new '$devices' list.\n";
+}
 
 print"Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
 
