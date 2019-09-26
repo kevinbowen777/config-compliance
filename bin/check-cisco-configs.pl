@@ -3,7 +3,8 @@
 #
 # Name: check-cisco-configs.pl
 # Purpose: Pulls device information from: ../devices/device_list.txt
-#		and start running policy scripts for IOS and NX-OS devices
+#		Determine whether config is an IOS or NX-OX device
+#		and start running the appropriate platform's policy script 
 # Compatible: n/a
 # Requirements: ioslib.pm
 #
@@ -31,18 +32,13 @@ my $date = strftime "%m/%d/%y",localtime;
 my $config;
 my $dirname = File::Basename::dirname($abs_path);
 my $cfgfiles = "$dirname/../devices";
-# my $devices = "$cfgfiles/device_list.txt";
 my $lines;
-my ($file) = @ARGV;
-
 my ($devices) = @ARGV;
 
 if (not defined $devices) {
 	$devices = "$cfgfiles/device_list.txt";
-	print "The default  '$devices' list.\n";
 }
 if (defined $devices) {
-	print "The new '$devices' list.\n";
 }
 
 print"Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
@@ -60,23 +56,26 @@ foreach my $line (split(/\n/, $lines)) {
 	$line =~ s/\s+$//;
 	$config = "";
 	# Open device configuration files 
-	open FILE, '<', "$cfgfiles/$line" or die "Could not open $line $!";;
+	open FILE, '<', "$cfgfiles/$line" or die "Could not open $line $!";
 	while (<FILE>) { $config .= $_ }
 	close $devices;
 
  # Check device platforms - IOS, NX-OS, IOS XR
- if($config =~ /NVRAM/m || $config =~ /version 12/m || $config =~ /version 15/m){
+ if($config =~ /NVRAM/m || $config =~ /version 12/m || $config =~ /version 15/m) {
 	# Run IOS policy check
-	my $output = `$dirname/smartsios_1.2.1.pl $line`;
+	my $output = `$dirname/policycheck_IOS_1.2.1.pl $line`;
 	print $output;
- } elsif($config =~ /feature tacacs/m){
+ } 
+ elsif($config =~ /feature tacacs/m) {
  	# Run NX-OS policy check
-	my $output = `$dirname/smartsnx_1.2.1.pl $line`;
+	my $output = `$dirname/policycheck_NX-OS_1.2.1.pl $line`;
 	print $output;
- } elsif($config =~ /IOS XR/m){
+ } 
+ elsif($config =~ /IOS XR/m) {
 	# Match format to fit in remediation report cleanly
 	print "$date,,$line,IOS XR - UNSUPPORTED,N/A,FAIL\n";
- } else{
+ } 
+ else {
 	print "$date,,$line,UNSUPPORTED PLATFORM,N/A,FAIL\n";
  }
 }

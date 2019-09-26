@@ -25,8 +25,8 @@ Files:
 	* create_device_list.sh - Creates lists based on device naming
 	                  (prod, corp, dev, dc1, etc.)
 	* ioslib.pm - Collection of device functions
-	* smartsios_1.2.1.pl - Parses device.cfg against IOS templates
-	* smartsnx_1.2.1.pl - Parses device.cfg against NX-OS templates
+	* policycheck_IOS_1.2.1.pl - Parses device.cfg against IOS templates
+	* policycheck_NX-OS_1.2.1.pl - Parses device.cfg against NX-OS templates
 
 
 ## License
