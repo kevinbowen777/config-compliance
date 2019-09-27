@@ -1,8 +1,12 @@
 archive/
 inc/
+bin/*.bak
+bin/*.dist
+bin/*.tdy
 bin/*test.pl
 devices/archive/*
 devices/*.cfg
+reports/*
 reports/cisco_remediation-all*
 reports/.~lock*
 TODO
