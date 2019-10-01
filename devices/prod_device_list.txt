@@ -1,16 +1,15 @@
-dc2-soob-rt01.prod.cfg
 dc1-acc-001.prod.cfg
 dc1-cor-rt02.prod.cfg
-dc2-loob-sw03.prod.cfg
 dc2-acc-sw502.prod.cfg
+dc2-oob-rt01.prod.cfg
 dc2-n7k-ch02.prod.cfg
-dc2-loob-sw01.prod.cfg
 dc2-cor-rt01.prod.cfg
+dc2-oob-sw01.prod.cfg
 dc1-acc-002.prod.cfg
 dc1-agg-ch02.prod.cfg
-dc2-soob-rt02.prod.cfg
 dc2-acc-sw503.prod.cfg
 dc2-cor-rr02.prod.cfg
+dc2-oob-rt02.prod.cfg
 dc1-acc-sw502.prod.cfg
 dc1-mgt-rt002.prod.cfg
 dc2-svc-fw03b.prod.cfg
@@ -21,3 +20,4 @@ dc1-agg-ch01.prod.cfg
 dc2-cor-rr01.prod.cfg
 dc1-cor-rt01.prod.cfg
 dc2-n7k-ch01.prod.cfg
+dc2-oob-sw03.prod.cfg
