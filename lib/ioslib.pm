@@ -19,446 +19,460 @@ package ioslib;
 use strict;
 use warnings;
 use Exporter;
-our @ISA = qw( Exporter );
+our @ISA    = qw( Exporter );
 our @EXPORT = qw(
-	ios_config_global_lines
-	ios_config_nested_lines
-	config_lines
-	nest nest_mismatch
-	int_array_nest
-	vlan_priorities
-	int_vlan_nest
-	open_file
-	pass_check
-	interface_list
-	ios_config_all_interfaces
+    ios_config_global_lines
+    ios_config_nested_lines
+    config_lines
+    nest nest_mismatch
+    int_array_nest
+    vlan_priorities
+    int_vlan_nest
+    open_file
+    pass_check
+    interface_list
+    ios_config_all_interfaces
 );
 
 sub ios_config_global_lines {
 
-	# Usage:
-	# $config_delta = &ios_config_global_lines($new_config, $running_config)
-	# Read input from new config and init output config delta
-	# my $new_config = shift or return "";
-	
-	my $new_config = shift or die;
-	my $running_config = shift or die;
-	my $config_delta = "";
+    # Usage:
+    # $config_delta = &ios_config_global_lines($new_config, $running_config)
+    # Read input from new config and init output config delta
+    # my $new_config = shift or return "";
 
-	# Separate the config commands from the comments in the new config
-	
-	my ($config, $comments) = ("", "");
-	foreach my $line (split(/\n/, $new_config)) {
-		if ($line =~ s/^\s*(!)/$1/) {
-			$comments .= "$line\n";
-		} elsif ($line =~ s/^\s*(\S)/$1/) {
-			$config .= "$line\n";
-		}
-	}
+    my $new_config     = shift or die;
+    my $running_config = shift or die;
+    my $config_delta   = "";
 
-	# Set output config using common configurator config_global function
-	$config_delta = &config_lines($running_config, $config);
+    # Separate the config commands from the comments in the new config
 
-	# Comment if config lines were all matched
-	if ($config_delta){
-		$config_delta = "! FAIL mismatch config\n" . $config_delta ."\n";
-	}else{
-		$config_delta = "! PASS matched config\n";
-	}
-	# $config_delta = "! configurator matched global config commands\n"
-	#	if not $config_delta;
+    my ( $config, $comments ) = ( "", "" );
+    foreach my $line ( split( /\n/, $new_config ) ) {
+        if ( $line =~ s/^\s*(!)/$1/ ) {
+            $comments .= "$line\n";
+        }
+        elsif ( $line =~ s/^\s*(\S)/$1/ ) {
+            $config .= "$line\n";
+        }
+    }
 
-	# Prepend comments to config delta
-	$config_delta = $comments . $config_delta;
+    # Set output config using common configurator config_global function
+    $config_delta = &config_lines( $running_config, $config );
 
-	# Finished ios_config_global_lines
-	chomp $config_delta;
-	return "$config_delta\n";
+    # Comment if config lines were all matched
+    if ($config_delta) {
+        $config_delta = "! FAIL mismatch config\n" . $config_delta . "\n";
+    }
+    else {
+        $config_delta = "! PASS matched config\n";
+    }
+
+    # $config_delta = "! configurator matched global config commands\n"
+    #	if not $config_delta;
+
+    # Prepend comments to config delta
+    $config_delta = $comments . $config_delta;
+
+    # Finished ios_config_global_lines
+    chomp $config_delta;
+    return "$config_delta\n";
 }
-
-
 
 sub ios_config_nested_lines {
 
-	# $config_delta = &ios_config_nested_lines($new_config, $running_config)
+    # $config_delta = &ios_config_nested_lines($new_config, $running_config)
 
-	# Read inputs and init output config delta
-	my $new_config = shift;
-	my $nested_config = shift or return "";
-	$nested_config = "" if not defined $nested_config;
-	my $config_delta = "";
+    # Read inputs and init output config delta
+    my $new_config    = shift;
+    my $nested_config = shift or return "";
+    $nested_config = "" if not defined $nested_config;
+    my $config_delta = "";
 
-	# Separate the config commands from the comments in the new config
-	my ($nested_first_line, $config, $comments) = ("", "", "");
-	foreach my $line (split(/\n/, $new_config)) {
-		if ($line =~ s/^\s*(!)/$1/) {
-			$comments .= "$line\n";
-		} elsif (not $nested_first_line and $line =~ s/^\s*(\S)/$1/) {
-			$nested_first_line = $line;
-		} elsif ($line =~ s/^\s*(\S)/$1/) {
-			$config .= "$line\n";
-		}
-	}
+    # Separate the config commands from the comments in the new config
+    my ( $nested_first_line, $config, $comments ) = ( "", "", "" );
+    foreach my $line ( split( /\n/, $new_config ) ) {
+        if ( $line =~ s/^\s*(!)/$1/ ) {
+            $comments .= "$line\n";
+        }
+        elsif ( not $nested_first_line and $line =~ s/^\s*(\S)/$1/ ) {
+            $nested_first_line = $line;
+        }
+        elsif ( $line =~ s/^\s*(\S)/$1/ ) {
+            $config .= "$line\n";
+        }
+    }
 
-	# Set output config using common configurator config_global function
-	# Remove leading spaces, so it looks like global config for config_lines
-	$nested_config =~ s/^\s*//mg;
-	$config_delta = &config_lines($nested_config, $config);
+    # Set output config using common configurator config_global function
+    # Remove leading spaces, so it looks like global config for config_lines
+    $nested_config =~ s/^\s*//mg;
+    $config_delta = &config_lines( $nested_config, $config );
 
-	# Comment if config lines were all matched or not
-	if ($config_delta){
-		$config_delta = "! FAIL mismatch config\n" . $config_delta ."\n";
-	}else{
-		$config_delta = "$comments ! PASS matched config\n";
-		return $config_delta;
-	}
+    # Comment if config lines were all matched or not
+    if ($config_delta) {
+        $config_delta = "! FAIL mismatch config\n" . $config_delta . "\n";
+    }
+    else {
+        $config_delta = "$comments ! PASS matched config\n";
+        return $config_delta;
+    }
 
-	if ($nested_config !~ /^$nested_first_line/m){
-		$config_delta = "$comments ! PASS not applicable\n";
-		return $config_delta;
-	}
+    if ( $nested_config !~ /^$nested_first_line/m ) {
+        $config_delta = "$comments ! PASS not applicable\n";
+        return $config_delta;
+    }
 
-	# Prepend config delta commands with nested first line and comments
-	$config_delta =~ s/^/ /mg;
-	$config_delta = "" if $config_delta !~ /\S/;
-	$config_delta = "$nested_first_line\n$config_delta" if $config_delta;
-	$config_delta = $comments . $config_delta;
+    # Prepend config delta commands with nested first line and comments
+    $config_delta =~ s/^/ /mg;
+    $config_delta = "" if $config_delta !~ /\S/;
+    $config_delta = "$nested_first_line\n$config_delta" if $config_delta;
+    $config_delta = $comments . $config_delta;
 
-	# Finished &ios_config_nested_lines
-	chomp $config_delta;
-	return "$config_delta\n";
+    # Finished &ios_config_nested_lines
+    chomp $config_delta;
+    return "$config_delta\n";
 }
 
 sub config_lines {
 
-	# $config_delta = &config_lines($config_old, $config_new)
-	# Purpose: Match $config_new to $config_old and set $config_delta
-	# $config_new lines missing from $config_old are added to $config_delta
-	# $config_new lines in format '+no /^regex/' can no-out $config_old lines
-	# $config_delta will be null if no changes are required
+    # $config_delta = &config_lines($config_old, $config_new)
+    # Purpose: Match $config_new to $config_old and set $config_delta
+    # $config_new lines missing from $config_old are added to $config_delta
+    # $config_new lines in format '+no /^regex/' can no-out $config_old lines
+    # $config_delta will be null if no changes are required
 
-	# Read inputs and init output config delta
-	my ($config_old, $config_new) = @_;
-	return "" if not defined $config_new;
-	my $config_delta = "";
+    # Read inputs and init output config delta
+    my ( $config_old, $config_new ) = @_;
+    return "" if not defined $config_new;
+    my $config_delta = "";
 
-	# Loop through lines of new config
-	# Strip leading/trailing spaces and convert multiple spaces to single space
-	foreach my $line_new (split(/\n/, $config_new)) {
-		$line_new =~ s/(^\s+|\s+$)//g;
-		$line_new =~ s/\s\s+/ /g;
+   # Loop through lines of new config
+   # Strip leading/trailing spaces and convert multiple spaces to single space
+    foreach my $line_new ( split( /\n/, $config_new ) ) {
+        $line_new =~ s/(^\s+|\s+$)//g;
+        $line_new =~ s/\s\s+/ /g;
 
-		next if $line_new !~ /\S/;
+        next if $line_new !~ /\S/;
 
-		# Set flag if $config_new is spotted in $config_old
-		my $config_matched = 0;
+        # Set flag if $config_new is spotted in $config_old
+        my $config_matched = 0;
 
-		# Set regex to match for +no lines, ensure no trailing letters
-		my $regex = "";
-		$regex = $1 if $line_new =~ /^\+no\s+\/(.+)\/\s*$/;
-		die "invalid regex trailing letters '$line_new'\n"
-			if $line_new =~ /^\+no\s+\/(.+)\/\w+\s*$/;
+        # Set regex to match for +no lines, ensure no trailing letters
+        my $regex = "";
+        $regex = $1 if $line_new =~ /^\+no\s+\/(.+)\/\s*$/;
+        die "invalid regex trailing letters '$line_new'\n"
+            if $line_new =~ /^\+no\s+\/(.+)\/\w+\s*$/;
 
-		# Set regex2 to partial match for ~ lines
-		if ($line_new =~ /\~\s+\/(.+)\//){
+        # Set regex2 to partial match for ~ lines
+        if ( $line_new =~ /\~\s+\/(.+)\// ) {
 
-			my $regex2 = $1;
+            my $regex2 = $1;
 
-			# Add a comment if partial match is not found
-			if ($config_old !~ /$regex2/m){
-				$config_delta .= "$regex2 <user input>";
-				return $config_delta;
-			}else{
-				return "";
-			}
-		}
+            # Add a comment if partial match is not found
+            if ( $config_old !~ /$regex2/m ) {
+                $config_delta .= "$regex2 <user input>";
+                return $config_delta;
+            }
+            else {
+                return "";
+            }
+        }
 
-		# Loop through existing config lines
-		# Only process lines with no leading spaces, skip comments
-		# Strip trailing spaces and convert multiple spaces to a single space
-		foreach my $line_old (split(/\n/, $config_old)) {
-			next if $line_old !~ /^\S/;
-			$line_old =~ s/\s+$//;
-			$line_old =~ s/\s\s+/ /g;
+        # Loop through existing config lines
+        # Only process lines with no leading spaces, skip comments
+        # Strip trailing spaces and convert multiple spaces to a single space
+        foreach my $line_old ( split( /\n/, $config_old ) ) {
+            next if $line_old !~ /^\S/;
+            $line_old         =~ s/\s+$//;
+            $line_old         =~ s/\s\s+/ /g;
 
-			# No-out old line in config delta if '+no /regex/' matches
-			# Don't no-out lines that we are adding in new config
-			if ($regex and $line_old =~ /$regex/) {
-				next if $config_new =~ /^\s*\Q$line_old\E\s*$/m;
-				$config_delta .= "no $line_old\n";
+            # No-out old line in config delta if '+no /regex/' matches
+            # Don't no-out lines that we are adding in new config
+            if ( $regex and $line_old =~ /$regex/ ) {
+                next if $config_new =~ /^\s*\Q$line_old\E\s*$/m;
+                $config_delta .= "no $line_old\n";
 
-			# Set flag true if we found an old line matching the new line
-			} elsif ($line_new eq $line_old) {
-				$config_matched = 1;
-			}
+                # Set flag true if we found an old line matching the new line
+            }
+            elsif ( $line_new eq $line_old ) {
+                $config_matched = 1;
+            }
 
-		# Finish looping through global config lines
-		}
+            # Finish looping through global config lines
+        }
 
-		# Append new line to config delta if no '+no /regex/' and not matched
-		$config_delta .= "$line_new\n" if not $regex and not $config_matched;
+        # Append new line to config delta if no '+no /regex/' and not matched
+        $config_delta .= "$line_new\n" if not $regex and not $config_matched;
 
-	# Finished looping through lines of new config
-	}
+        # Finished looping through lines of new config
+    }
 
-	# Clean up end of config delta
-	$config_delta =~ s/\s+$//;
-	chomp($config_delta);
-	# $config_delta .= "\n";
+    # Clean up end of config delta
+    $config_delta =~ s/\s+$//;
+    chomp($config_delta);
 
-	# Finished @config_lines
-	return $config_delta;
+    # $config_delta .= "\n";
+
+    # Finished @config_lines
+    return $config_delta;
 }
 
 sub nest {
 
-	# $nest = &nest($running_config, $line)
-	# Purpose: return $nest match in $running_config for $line
-	# $nest will contain $line and any following indented lines
-	# $line must have no leading spaces in $config
-	# $nest will be null if no matching $line was found in $config
-	# $nest tailing spaces removed and multiple spaces converted to single
+    # $nest = &nest($running_config, $line)
+    # Purpose: return $nest match in $running_config for $line
+    # $nest will contain $line and any following indented lines
+    # $line must have no leading spaces in $config
+    # $nest will be null if no matching $line was found in $config
+    # $nest tailing spaces removed and multiple spaces converted to single
 
-	# Set nest from running config matching line
-	my ($config, $line) = @_;
-	return "" if not defined $config;
-	return "" if not defined $line;
+    # Set nest from running config matching line
+    my ( $config, $line ) = @_;
+    return "" if not defined $config;
+    return "" if not defined $line;
 
-	# Parse $nest for $config when $line matches
-	$line =~ s/^(\s+|\s+$)//g;
-	$line =~ s/\s\s+/ /g;
-	my $nest = "";
-	my $sh_run = $Configurator::Common::d->{ios_sh_run};
-	foreach my $cfg_line (split(/\n/, $sh_run)) {
-		$cfg_line =~ s/\s+$//;
-		$cfg_line =~ s/\s\s+/ /g;
-		if (not $nest) {
-			if ($cfg_line eq $line) {
-				$nest = "$line\n";
-			} else {
-				next;
-			}
-		} elsif ($cfg_line =~ /^\S/) {
-			last;
-		} else {
-			$nest .= "$cfg_line\n";
-		}
-	}
+    # Parse $nest for $config when $line matches
+    $line =~ s/^(\s+|\s+$)//g;
+    $line =~ s/\s\s+/ /g;
+    my $nest   = "";
+    my $sh_run = $Configurator::Common::d->{ios_sh_run};
+    foreach my $cfg_line ( split( /\n/, $sh_run ) ) {
+        $cfg_line =~ s/\s+$//;
+        $cfg_line =~ s/\s\s+/ /g;
+        if ( not $nest ) {
+            if ( $cfg_line eq $line ) {
+                $nest = "$line\n";
+            }
+            else {
+                next;
+            }
+        }
+        elsif ( $cfg_line =~ /^\S/ ) {
+            last;
+        }
+        else {
+            $nest .= "$cfg_line\n";
+        }
+    }
 
-	# Finished nest function
-	return $nest;
+    # Finished nest function
+    return $nest;
 }
 
 sub nest_mismatch {
 
-	# $mismatch = &nest_mismatch($nest_old, $nest_new)
-	# Purpose: See if $nest_old and $nest_new are exact matches
-	# $mismatch: set null for exact match, otherwise set "! mismatch hint\n"
-	# Note: the smart_config_line_mismatch is used for line comparisons
+    # $mismatch = &nest_mismatch($nest_old, $nest_new)
+    # Purpose: See if $nest_old and $nest_new are exact matches
+    # $mismatch: set null for exact match, otherwise set "! mismatch hint\n"
+    # Note: the smart_config_line_mismatch is used for line comparisons
 
-	# Read inputs
-	my $nest_old = shift or return "! show run config nest missing\n";
-	my $nest_new = shift or return "! template config nest missing\n" ;
+    # Read inputs
+    my $nest_old = shift or return "! show run config nest missing\n";
+    my $nest_new = shift or return "! template config nest missing\n";
 
-	# Initialize output match flag
-	my $mismatch = "";
+    # Initialize output match flag
+    my $mismatch = "";
 
-	# Make list of old nest lines, used for comparison
-	my @old_lines = ();
-	foreach my $line (split(/\n/, $nest_old)) {
-		next if $line !~ /\S/ or $line =~ /^\s*!/;
-		next if $line =~ /^\s*remark/;
-		$line =~ s/(^\s+|\s+$)//g;
-		$line =~ s/\s\s+/ /g;
-		push @old_lines, $line;
-	}
+    # Make list of old nest lines, used for comparison
+    my @old_lines = ();
+    foreach my $line ( split( /\n/, $nest_old ) ) {
+        next if $line !~ /\S/ or $line =~ /^\s*!/;
+        next if $line =~ /^\s*remark/;
+        $line =~ s/(^\s+|\s+$)//g;
+        $line =~ s/\s\s+/ /g;
+        push @old_lines, $line;
+    }
 
-	# Are we sure that we want to continue always skipping remarks in config?
-	# the above/below old/new nest line loops now skip remarks
-	# new nest loop below has duplicate trim regex, could be deleted
-	# was this done to eliminate hits on ACL remarks in audit reports?
-	# seems were few devices with an ios problem, preserving old remark
-	# don't other systems/projects/users sometimes key off remarks?
-	# maybe make skipping remarks a command line option in this script
+    # Are we sure that we want to continue always skipping remarks in config?
+    # the above/below old/new nest line loops now skip remarks
+    # new nest loop below has duplicate trim regex, could be deleted
+    # was this done to eliminate hits on ACL remarks in audit reports?
+    # seems were few devices with an ios problem, preserving old remark
+    # don't other systems/projects/users sometimes key off remarks?
+    # maybe make skipping remarks a command line option in this script
 
-	# Make list of new nest lines, used for comparison
-	my @new_lines = ();
-	foreach my $line (split(/\n/, $nest_new)) {
-		next if $line !~ /\S/ or $line =~ /^\s*!/;
-		next if $line =~ /^\s*remark/;
-		$line =~ s/(^\s+|\s+$)//g;
-		$line =~ s/(^\s+|\s+$)//g;
-		$line =~ s/\s\s+/ /g;
-		push @new_lines, $line;
-	}
+    # Make list of new nest lines, used for comparison
+    my @new_lines = ();
+    foreach my $line ( split( /\n/, $nest_new ) ) {
+        next if $line !~ /\S/ or $line =~ /^\s*!/;
+        next if $line =~ /^\s*remark/;
+        $line =~ s/(^\s+|\s+$)//g;
+        $line =~ s/(^\s+|\s+$)//g;
+        $line =~ s/\s\s+/ /g;
+        push @new_lines, $line;
+    }
 
-	# Grab first input config line
-	my $old_line = shift @old_lines;
+    # Grab first input config line
+    my $old_line = shift @old_lines;
 
-	# Warn if any old nest lines are not matched with new nest lines
-	foreach my $new_line (@new_lines) {
+    # Warn if any old nest lines are not matched with new nest lines
+    foreach my $new_line (@new_lines) {
 
-		# Mismatch if new line is missing from old
-		if (not defined $old_line) {
-			$new_line =~ s/^\s+//;
-			$mismatch .= "! show run config missing this nest\n";
-			last;
-		}
+        # Mismatch if new line is missing from old
+        if ( not defined $old_line ) {
+            $new_line =~ s/^\s+//;
+            $mismatch .= "! show run config missing this nest\n";
+            last;
+        }
 
-		# Mismatch if new and old lines are different
-		if ($old_line ne $new_line) {
-			$new_line =~ s/^\s+//;
-			$old_line =~ s/^\s+//;
-			$mismatch .= "! show run config mismatch old: $old_line\n";
-			$mismatch .= "! template config mismatch new: $new_line\n";
-			last;
-	}
+        # Mismatch if new and old lines are different
+        if ( $old_line ne $new_line ) {
+            $new_line =~ s/^\s+//;
+            $old_line =~ s/^\s+//;
+            $mismatch .= "! show run config mismatch old: $old_line\n";
+            $mismatch .= "! template config mismatch new: $new_line\n";
+            last;
+        }
 
-	# Config line and regex line matched, get next input config line
-		$old_line = shift @old_lines;
+        # Config line and regex line matched, get next input config line
+        $old_line = shift @old_lines;
 
-	# Continue looping through new nest lines
-	}
+        # Continue looping through new nest lines
+    }
 
-	# Check if old lines are left after checking new lines
-	if (not $mismatch and defined $old_line) {
-		$old_line =~ s/^\s+//;
-		$mismatch .= "! show run config extra: $old_line\n";
+    # Check if old lines are left after checking new lines
+    if ( not $mismatch and defined $old_line ) {
+        $old_line =~ s/^\s+//;
+        $mismatch .= "! show run config extra: $old_line\n";
+    }
+
+    # Finished nest_mismatch function
+    return $mismatch;
 }
-
-	# Finished nest_mismatch function
-	return $mismatch;
-}
-
 
 sub int_array_nest {
 
-	my $running_config = shift or die;
-	# Store all nesting from running config separately
-	my $nest = "";
-	my %int;
-	foreach my $line (split(/\n/, $running_config)) {
-		$line =~ s/\s+$//;
-		if ($line =~ /^\S/){
-		   $nest = $line;
-		   next;
-		}
-		$int{$nest} .= "$line\n"
-			if $nest ne "";
+    my $running_config = shift or die;
+
+    # Store all nesting from running config separately
+    my $nest = "";
+    my %int;
+    foreach my $line ( split( /\n/, $running_config ) ) {
+        $line =~ s/\s+$//;
+        if ( $line =~ /^\S/ ) {
+            $nest = $line;
+            next;
+        }
+        $int{$nest} .= "$line\n"
+            if $nest ne "";
     }
 
-	return %int;
+    return %int;
 }
 
 sub vlan_priorities {
-	my @myvlans;
-	my $myprio;
-	my %priority;
+    my @myvlans;
+    my $myprio;
+    my %priority;
 
-	my $running_config = shift or die;
-        foreach my $line (split(/\n/, $running_config)) {
-                if ($line =~ /tree vlan ([\d\-\,]+) priority (\d+)/){
-			@myvlans = &_list_array($1);
-			$myprio=$2;
+    my $running_config = shift or die;
+    foreach my $line ( split( /\n/, $running_config ) ) {
+        if ( $line =~ /tree vlan ([\d\-\,]+) priority (\d+)/ ) {
+            @myvlans = &_list_array($1);
+            $myprio  = $2;
 
-			foreach(@myvlans){
-				$priority{$_}=$myprio;
-			}
-		}
-	}
-	return %priority;
+            foreach (@myvlans) {
+                $priority{$_} = $myprio;
+            }
+        }
+    }
+    return %priority;
 }
 
-sub _list_array{
-	my $list = shift or die;
-	my $vlan;
-	my $i;
-	my @vlarray;
-	foreach my $vlan (split(/\,/, $list)){
-		if ($vlan =~ /^\d+$/){
-			push(@vlarray,$vlan);
-		} elsif ($vlan =~ /^(\d+)\-(\d+)$/){
-			foreach my $i ($1 .. $2){
-				push(@vlarray,$i);
-			}
-		}
-	}
+sub _list_array {
+    my $list = shift or die;
+    my $vlan;
+    my $i;
+    my @vlarray;
+    foreach my $vlan ( split( /\,/, $list ) ) {
+        if ( $vlan =~ /^\d+$/ ) {
+            push( @vlarray, $vlan );
+        }
+        elsif ( $vlan =~ /^(\d+)\-(\d+)$/ ) {
+            foreach my $i ( $1 .. $2 ) {
+                push( @vlarray, $i );
+            }
+        }
+    }
 
-	return @vlarray;
+    return @vlarray;
 }
 
 sub int_vlan_nest {
 
-	my $running_config = shift or die;
-	# Store all nesting from running config separately
-	my $nest = "";
-	my %int;
-	foreach my $line (split(/\n/, $running_config)) {
-		$line =~ s/\s+$//;
-		if ($line =~ /^\S/ && $line =~ /interface Vlan/i){
-		   $nest = $line;
-		}
-		$int{$nest} .= "$line\n"
-			if $nest ne "";
+    my $running_config = shift or die;
+
+    # Store all nesting from running config separately
+    my $nest = "";
+    my %int;
+    foreach my $line ( split( /\n/, $running_config ) ) {
+        $line =~ s/\s+$//;
+        if ( $line =~ /^\S/ && $line =~ /interface Vlan/i ) {
+            $nest = $line;
+        }
+        $int{$nest} .= "$line\n"
+            if $nest ne "";
     }
 
-	return %int;
+    return %int;
 }
 
 sub open_file {
 
-	my $file = shift or die;
+    my $file = shift or die;
 
-	open my $FILE, '<', $file or die " Can't open '$file'";
+    open my $FILE, '<', $file or die " Can't open '$file'";
 
-	my $config;
+    my $config;
 
-	# Dump config into $config
-	while (<$FILE>) { $config .= $_ }
-	close $FILE;
+    # Dump config into $config
+    while (<$FILE>) { $config .= $_ }
+    close $FILE;
 
-	return $config;
+    return $config;
 }
 
 sub pass_check {
 
-	my $input = shift or die;
+    my $input = shift or die;
 
-	if ($input =~ /FAIL/m){
-		return "FAIL,"
-	} else{
-		return "PASS,"
-	}
+    if ( $input =~ /FAIL/m ) {
+        return "FAIL,";
+    }
+    else {
+        return "PASS,";
+    }
 }
 
 sub interface_list {
 
-	my @int_list;
-	my $running_config = shift or die;
+    my @int_list;
+    my $running_config = shift or die;
 
-	foreach my $line (split(/\n/, $running_config)) {
-		if ($line =~ /^(interface .*)/) {
-			next if $line =~ /Loopback/i;
-			push(@int_list, $1);
-		}
-	}
-	return @int_list;
+    foreach my $line ( split( /\n/, $running_config ) ) {
+        if ( $line =~ /^(interface .*)/ ) {
+            next if $line =~ /Loopback/i;
+            push( @int_list, $1 );
+        }
+    }
+    return @int_list;
 }
 
 sub ios_config_all_interfaces {
 
-	my $new_config = shift or die;
-	my $running_config = shift or die;
-	my @int_list = shift or die;
-	my $new_int;
-	my $config_delta;
+    my $new_config     = shift or die;
+    my $running_config = shift or die;
+    my @int_list       = shift or die;
+    my $new_int;
+    my $config_delta;
 
-	foreach(@int_list){
-		$new_int = "$_\n$new_config";
-		$config_delta .= &ios_config_nested_lines($new_int, $running_config);
-	}
+    foreach (@int_list) {
+        $new_int = "$_\n$new_config";
+        $config_delta
+            .= &ios_config_nested_lines( $new_int, $running_config );
+    }
 
-	return $config_delta;
+    return $config_delta;
 }
 
 1;
