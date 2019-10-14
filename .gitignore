@@ -6,8 +6,17 @@ bin/*.tdy
 bin/*test.pl
 devices/archive/*
 devices/*.cfg
+lib/*.bak
+lib/*.tdy
 reports/*
+reports/archive/*
 reports/cisco_remediation-all*
+reports/corp/archive/*
+reports/dc1/archive/*
+reports/dc2/archive/*
+reports/mgmt/archive/*
+reports/prod/archive/*
+reports/testing/*
 reports/.~lock*
 TODO
 *.dist
