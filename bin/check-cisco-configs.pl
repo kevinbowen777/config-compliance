@@ -44,7 +44,7 @@ if ( defined $devices ) {
 print "Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
 
 # Open list of devices
-open FILE, "$devices" or die "Could not open $devices $!";
+open FILE, '<',  "$devices" or die "Could not open $devices $!";
 
 while (<FILE>) {
     $lines .= $_;
