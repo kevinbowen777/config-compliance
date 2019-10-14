@@ -32,6 +32,7 @@ my $abs_path = Cwd::abs_path($PROGRAM_NAME);
 my $date     = strftime "%m/%d/%y", localtime;
 my $dirname  = File::Basename::dirname($abs_path);
 my $cfgfiles = "$dirname/../devices";
+my $config;
 
 my $ios_policy_dir = "$dirname/../policies/ios";
 
@@ -39,15 +40,15 @@ my $ios_policy_dir = "$dirname/../policies/ios";
 my ($file) = @ARGV;
 
 #Open config file
-open $FILE, "$cfgfiles/$file" or die "file not found $file";
+open $file, "$cfgfiles/$file" or die "file not found $file";
 
 # File timestamp
-$timestamp = stat($FILE)->mtime;
+my $timestamp = stat($file)->mtime;
 $timestamp = strftime "%m/%d/%y", localtime($timestamp);
 
 # Dump config into $config
-while (<$FILE>) { $config .= $_ }
-close $FILE;
+while (<$file>) { $config .= $_ }
+close $file;
 
 my $diff = "";
 
