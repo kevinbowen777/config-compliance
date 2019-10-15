@@ -1,5 +1,6 @@
 archive/
 inc/
+bin/archive-lists.sh
 bin/*.bak
 bin/*.dist
 bin/*.tdy
@@ -19,4 +20,5 @@ reports/prod/archive/*
 reports/testing/*
 reports/.~lock*
 TODO
+policy_list.txt
 *.dist

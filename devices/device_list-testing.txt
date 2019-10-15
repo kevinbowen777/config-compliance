@@ -1,0 +1,13 @@
+dc1-acc-001.prod.cfg
+dc1-cor-rt02.prod.cfg
+dc2-oob-rt01.prod.cfg
+dc2-n7k-ch02.prod.cfg
+dc2-cor-rt01.prod.cfg
+dc2-oob-sw01.prod.cfg
+dc2-cor-rr02.prod.cfg
+dc1-svc-rt02.qa.cfg
+dc1-svc-vp001.mgmt.cfg
+dc1-svc-fw01.dev.cfg
+dc2-cor-rr01.prod.cfg
+dc1-cor-rt01.prod.cfg
+dc2-oob-sw03.prod.cfg
