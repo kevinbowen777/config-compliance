@@ -1,0 +1,38 @@
+Device Name				Platform 
+========================================
+dc1-acc-001.prod.cfg	IOS			
+dc1-acc-002.prod.cfg	IOS			
+dc1-acc-sw501.corp.cfg	NX-OS			
+dc1-acc-sw501.prod.cfg	NX-OS			
+dc1-acc-sw501.prod.cfg	NX-OS			
+dc1-acc-sw502.corp.cfg	NX-OS			
+dc1-acc-sw502.prod.cfg	NX-OS			
+dc1-agg-ch01.prod.cfg	NX-OS			
+dc1-agg-ch02.prod.cfg	NX-OS			
+dc1-cor-rt01.prod.cfg	IOS XR		
+dc1-cor-rt02.prod.cfg	IOS XR		
+dc1-mgt-rt002.prod.cfg	IOS			
+dc1-svc-ch01.qa.cfg		NX-OS			
+dc1-svc-ch02.qa.cfg		NX-OS			
+dc1-svc-fw01.dev.cfg	IOS			
+dc1-svc-rt003.mgmt.cfg	NX-OS			
+dc1-svc-rt004.mgmt.cfg	NX-OS			
+dc1-svc-rt01.qa.cfg		NX-OS			
+dc1-svc-rt02.qa.cfg		NX-OS			
+dc1-svc-sw01.qa.cfg		NX-OS			
+dc1-svc-sw02.qa.cfg		NX-OS			
+dc1-svc-vp001.mgmt.cfg	UNKNOWN	ASA Version 8.2(2)	
+dc2-acc-sw501.prod.cfg	NX-OS			
+dc2-acc-sw502.prod.cfg	NX-OS			
+dc2-acc-sw503.prod.cfg	NX-OS			
+dc2-cor-rr01.prod.cfg	IOS			
+dc2-cor-rr02.prod.cfg	IOS			
+dc2-cor-rt01.prod.cfg	IOS XR		
+dc2-oob-sw01.prod.cfg	UNKNOWN JUNOS SRX?		
+dc2-oob-sw03.prod.cfg	UNKNOWN JUNOS SRX?		
+dc2-n7k-ch01.prod.cfg	NX-OS			
+dc2-n7k-ch02.prod.cfg	NX-OS			
+dc2-soob-rt01.prod.cfg	IOS			
+dc2-soob-rt02.prod.cfg	IOS			
+dc2-svc-fw03a.prod.cfg	UNKNOWN	PAN-OS
+dc2-svc-fw03b.prod.cfg	UNKNOWN	PAN-OS
