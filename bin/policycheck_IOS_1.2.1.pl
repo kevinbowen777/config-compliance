@@ -155,17 +155,19 @@ $diff13   = &strip_comments($diff13);
 print "$date,$timestamp,$file,IOS,13 - SSH,$output13$diff13\n";
 
 # Policy 14 - IOS VStack
-if ( $config =~ /switch 1 provision/i ) {
-    $diff14 = &ios_config_global_lines(
+if ( $config =~ /switch 1 provision/im ) {
+    my $diff14 = &ios_config_global_lines(
         &open_file("$ios_policy_dir/policy_14_IOS_VStack"), $config );
+    my $output14 = &pass_check($diff14);
     $diff14   = &strip_comments($diff14);
-    $output14 = &pass_check($diff14);
+	print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
 }
 else {
-    $diff14   = "";
-    $output14 = "PASS,";
+    my $diff14   = "";
+    my $output14 = "PASS,";
+	print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
 }
-print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
+# print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
 
 # Policy 15 - IOS Basic Services
 $diff15 = &ios_config_global_lines(
