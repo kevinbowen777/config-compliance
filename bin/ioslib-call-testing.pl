@@ -2,17 +2,15 @@
 
 # {{{ ---------------------------------------------------------------------- #
 #
-# Name:		policycheck_IOS-testing.pl
-# Purpose: This script checks configurations in ../devices direction
-# for IOS v1.00 policy violations
-# Compatible:
+# Name:		ios-call-testing.pl
+# Purpose: This script tests subroutine calls to ioslib.pm
 # Requirements: ioslib.pm
 #
 # Version: 0.0.1
 # Author: Kevin Bowen kevin.bowen@gmail.com
 #
-# Original source:
-# Updated: 20191014
+# Original source: policycheck_IOS-1.2.1.pl
+# Updated: 20191015
 #
 # }}} ---------------------------------------------------------------------- #
 
@@ -80,17 +78,18 @@ $diff8   = &strip_comments($diff8);
 print "$date,$timestamp,$file,IOS,08 - DNS,$output8$diff8\n";
 
 # Policy 14 - IOS VStack
-# if ( $config =~ /switch 1 provision/i ) {
-my $diff14 = &ios_config_global_lines(
+if ( $config =~ /switch 1 provision/im ) {
+	my $diff14 = &ios_config_global_lines(
         &open_file("$ios_policy_dir/policy_14_IOS_VStack"), $config );
-$diff14   = &strip_comments($diff14);
-my $output14 = &pass_check($diff14);
-   #}
-#else {
-	#my $diff14   = "";
-	#my $output14 = "PASS,";
-	#}
-print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
+	my $output14 = &pass_check($diff14);
+	$diff14   = &strip_comments($diff14);
+	print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
+   }
+else {
+	my $diff14   = "";
+	my $output14 = "PASS,";
+	print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
+	}
 
 # Policy 16 -IOS Boot System
 my $diff16 = &ios_config_global_lines(
