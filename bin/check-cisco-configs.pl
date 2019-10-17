@@ -44,21 +44,21 @@ if ( defined $devices ) {
 print "Date,ConfigStamp,Device,Platform,Policy,Result,Remediation config\n";
 
 # Open list of devices
-open FILE, '<',  "$devices" or die "Could not open $devices $!";
+open my $FILE, '<',  "$devices" or die "Could not open $devices $!";
 
-while (<FILE>) {
+while (<$FILE>) {
     $lines .= $_;
 }
 
-close FILE;
+close $FILE;
 
 foreach my $line ( split( /\n/, $lines ) ) {
     $line =~ s/\s+$//;
     $config = "";
 
     # Open device configuration files
-    open FILE, '<', "$cfgfiles/$line" or die "Could not open $line $!";
-    while (<FILE>) { $config .= $_ }
+    open $FILE, '<', "$cfgfiles/$line" or die "Could not open $line $!";
+    while (<$FILE>) { $config .= $_ }
     close $devices;
 
     # Check device platforms - IOS, NX-OS, IOS XR

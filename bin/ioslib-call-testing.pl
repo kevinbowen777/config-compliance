@@ -42,8 +42,7 @@ my ($file) = @ARGV;
 open my $FILE, '<', "$cfgfiles/$file" or die "file not found $file";
 
 # File timestamp
-my $timestamp = stat($FILE)->mtime;
-$timestamp = strftime "%m/%d/%y", localtime($timestamp);
+my $timestamp = strftime "%m/%d/%y", localtime(stat($FILE)->mtime);
 
 # Dump config into $config
 while (<$FILE>) { $config .= $_ }
@@ -56,67 +55,67 @@ my $output = "$file,";
 my @int_list = &interface_list($config);
 
 # Policy 04 - IOS Line AUX
-my $diff4 = &ios_config_nested_lines(
+$diff = &ios_config_nested_lines(
     &open_file("$ios_policy_dir/policy_04_IOS_Line_AUX"), $config );
-#if ( $diff4 =~ /does not exist/i ) {
-	#my $output4 = "PASS,";
-	#my $diff4   = "";
-	#}
-	#else {
-	# my $output4 = &pass_check($diff4);
-	#$diff4   = &strip_comments($diff4);
-	#}
-my $output4 = &pass_check($diff4);
-$diff4   = &strip_comments($diff4);
-print "$date,$timestamp,$file,IOS,04 - Line AUX,$output4$diff4\n";
+if ( $diff =~ /does not exist/i ) {
+	my $output = "PASS,you don't exist";
+	my $diff   = "";
+	print "$date,$timestamp,$file,IOS,04 - Line AUX,$output$diff\n";
+	}
+else {
+	my $output = &pass_check($diff);
+	$diff   = &strip_comments($diff);
+	print "$date,$timestamp,$file,IOS,04 - Line AUX,$output$diff\n";
+}
+# print "$date,$timestamp,$file,IOS,04 - Line AUX,$output$diff\n";
 
 # Policy 08 - IOS DNS
-my $diff8 = &ios_config_global_lines(
+$diff = &ios_config_global_lines(
     &open_file("$ios_policy_dir/policy_08_IOS_DNS"), $config );
-my $output8 = &pass_check($diff8);
-$diff8   = &strip_comments($diff8);
-print "$date,$timestamp,$file,IOS,08 - DNS,$output8$diff8\n";
+$output = &pass_check($diff);
+$diff   = &strip_comments($diff);
+print "$date,$timestamp,$file,IOS,08 - DNS,$output$diff\n";
 
 # Policy 14 - IOS VStack
 if ( $config =~ /switch 1 provision/im ) {
-	my $diff14 = &ios_config_global_lines(
+	my $diff = &ios_config_global_lines(
         &open_file("$ios_policy_dir/policy_14_IOS_VStack"), $config );
-	my $output14 = &pass_check($diff14);
-	$diff14   = &strip_comments($diff14);
-	print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
+	my $output = &pass_check($diff);
+	$diff   = &strip_comments($diff);
+	print "$date,$timestamp,$file,IOS,14 - VStack,$output$diff\n";
    }
 else {
-	my $diff14   = "";
-	my $output14 = "PASS,";
-	print "$date,$timestamp,$file,IOS,14 - VStack,$output14$diff14\n";
+	my $diff   = "";
+	my $output = "PASS,";
+	print "$date,$timestamp,$file,IOS,14 - VStack,$output$diff\n";
 	}
 
 # Policy 16 -IOS Boot System
-my $diff16 = &ios_config_global_lines(
+$diff = &ios_config_global_lines(
     &open_file("$ios_policy_dir/policy_16_IOS_Boot_System"), $config );
-my $output16 = &pass_check($diff16);
-$diff16   = &strip_comments($diff16);
-print "$date,$timestamp,$file,IOS,16 - Boot System,$output16$diff16\n";
+$output = &pass_check($diff);
+$diff   = &strip_comments($diff);
+print "$date,$timestamp,$file,IOS,16 - Boot System,$output$diff\n";
 
 # Policy 17 - IOS RCMD
-my $diff17 = &ios_config_global_lines(
+$diff = &ios_config_global_lines(
     &open_file("$ios_policy_dir/policy_17_IOS_RCMD"), $config );
-my $output17 = &pass_check($diff17);
-$diff17   = &strip_comments($diff17);
-print "$date,$timestamp,$file,IOS,17 - RCMD,$output17$diff17\n";
+$output = &pass_check($diff);
+$diff   = &strip_comments($diff);
+print "$date,$timestamp,$file,IOS,17 - RCMD,$output$diff\n";
 
 # Policy 18 - IOS Loopbacks
 if ( $config =~ /interface Loopback0/im && $file !~ /-sw/ ) {
-    my $diff18 = &ios_config_global_lines(
+    my $diff = &ios_config_global_lines(
         &open_file("$ios_policy_dir/policy_18_IOS_Loopback"), $config );
-    my $output18 = &pass_check($diff18);
-    $diff18   = &strip_comments($diff18);
-    print "$date,$timestamp,$file,IOS,18 - Loopback,$output18$diff18\n";
+    my $output = &pass_check($diff);
+    $diff   = &strip_comments($diff);
+    print "$date,$timestamp,$file,IOS,18 - Loopback,$output$diff\n";
 }
 else {
-    my $diff18   = "";
-    my $output18 = "PASS,";
-    print "$date,$timestamp,$file,IOS,18 - Loopback,$output18$diff18\n";
+    my $diff   = "";
+    my $output = "PASS,";
+    print "$date,$timestamp,$file,IOS,18 - Loopback,$output$diff\n";
 }
 
 #
@@ -125,10 +124,9 @@ sub strip_comments {
     my $new_config = shift or die;
 
     #separate the config commands from the comments in the new config
-    my $config = "";
+	my $config = "";
     foreach my $line ( split( /\n/, $new_config ) ) {
-        if ( $line =~ s/^\s*(!)/$1/ ) {
-
+		if ( $line =~ s/^\s*(!)/$1/ ) {
             #nothing
         }
         else {
@@ -137,8 +135,8 @@ sub strip_comments {
     }
 
     # This will strip SNMP Community strings from the report
-    $config =~ s{Alle5Gut}{<REDACTED>}g;
-    $config =~ s{\$3rvIceNoW!}{<REDACTED>}g;
+	$config =~ s{Alle5Gut}{<REDACTED>}g;
+	$config =~ s{\$3rvIceNoW!}{<REDACTED>}g;
     $config =~ tr{\n}{ };
-    return "$config";
+	return "$config";
 }
