@@ -22,20 +22,22 @@ use Cwd;
 use English;
 use File::Basename;
 use FindBin;
+use Path::Class;
 use lib "$FindBin::Bin/../lib";
 use POSIX qw(strftime);
 use File::stat;
 
 use ioslib;
 
+# TODO: Change $dirname to $approot
 my $abs_path = Cwd::abs_path($PROGRAM_NAME);
 my $date     = strftime "%m/%d/%y", localtime;
-my $dirname  = File::Basename::dirname($abs_path);
-my $cfgfiles = "$dirname/../devices";
-my $config;
+my $dirname  = (dir(File::Basename::dirname($abs_path))->parent);
+my $cfgfiles = $dirname->subdir('devices');
+my $policydir = $dirname->subdir('policies');
+my $ios_policy_dir = $policydir->subdir('ios');
+my $config   = '';
 my $diff = "";
-my $ios_policy_dir = "$dirname/../policies/ios";
-
 #Command line input
 my ($file) = @ARGV;
 
@@ -46,7 +48,9 @@ open my $FILE, '<', "$cfgfiles/$file" or die "file not found $file $!";
 my $timestamp = strftime "%m/%d/%y", localtime(stat($FILE)->mtime);
 
 # Dump config into $config
-while (<$FILE>) { $config .= $_ }
+while (<$FILE>) {
+        $config .= $_;
+}
 close $FILE;
 
 my $output = "$file,";

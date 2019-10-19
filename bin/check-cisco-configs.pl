@@ -11,7 +11,7 @@
 # Version: 1.2.1
 # Author: Kevin Bowen kevin.bowen@gmail.com
 #
-# Updated: 20190919
+# Updated: 20191018
 #
 # }}}----------------------------------------------------------------------- #
 
@@ -21,6 +21,7 @@ use warnings;
 use Cwd;
 use English;
 use File::Basename;
+use Path::Class;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use POSIX qw(strftime);
@@ -29,9 +30,13 @@ use ioslib;
 
 my $abs_path = Cwd::abs_path($PROGRAM_NAME);
 my $date     = strftime "%m/%d/%y", localtime;
+my $dirname  = dir(File::Basename::dirname($abs_path));
+# my $dirname  = File::Basename::dirname($abs_path);
+# my $cfgfiles = "$dirname/../devices";
+my $approot  = (dir(File::Basename::dirname($abs_path))->parent);
+my $cfgfiles = $approot->subdir('devices');
+
 my $config;
-my $dirname  = File::Basename::dirname($abs_path);
-my $cfgfiles = "$dirname/../devices";
 my $lines;
 my ($devices) = @ARGV;
 
@@ -49,7 +54,6 @@ open my $FILE, '<',  "$devices" or die "Could not open $devices $!";
 while (<$FILE>) {
     $lines .= $_;
 }
-
 close $FILE;
 
 foreach my $line ( split( /\n/, $lines ) ) {
