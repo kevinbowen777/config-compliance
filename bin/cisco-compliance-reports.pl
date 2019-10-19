@@ -15,7 +15,7 @@
 # Author: Kevin Bowen <kevin.bowen@gmail.com>
 #
 # Original source:
-# Updated: 20190919
+# Updated: 20191018
 #
 # }}} ----------------------------------------------------------------------- #
 
@@ -24,15 +24,17 @@ use warnings;
 
 use Cwd;
 use English;
+use Path::Class;
 use File::Basename;
 use POSIX qw(strftime);
 
 my $abs_path = Cwd::abs_path($PROGRAM_NAME);
-my $dirname = File::Basename::dirname($abs_path);
-my $report_date = strftime "%Y%m%d-%H:%M",localtime;
-my $device_dir = "$dirname/../devices";
-my $report_dir = "$dirname/../reports";
 my $date = strftime "%m/%d/%y %H:%M" ,localtime;
+my $dirname  = dir(File::Basename::dirname($abs_path));
+my $approot  = (dir(File::Basename::dirname($abs_path))->parent);
+my $report_date = strftime "%Y%m%d-%H:%M",localtime;
+my $device_dir = $approot->subdir('devices');
+my $report_dir = $approot->subdir('reports');
 
 # All Cisco Devices Report
 print "Processing compliance report for all Cisco devices...\n";

@@ -11,7 +11,7 @@
 # Author: Kevin Bowen kevin.bowen@gmail.com
 #
 # Original source:
-# Updated: 20191016
+# Updated: 20191018
 #
 # }}}----------------------------------------------------------------------- #
 
@@ -21,6 +21,7 @@ use warnings;
 use Cwd;
 use English;
 use File::Basename;
+use Path::Class;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use POSIX qw(strftime);
@@ -28,13 +29,15 @@ use File::stat;
 
 use ioslib;
 
-my $abs_path        = Cwd::abs_path($PROGRAM_NAME);
-my $dirname         = File::Basename::dirname($abs_path);
-my $cfgfiles        = "$dirname/../devices";
-my $date            = strftime "%m/%d/%y", localtime;
-my $nxos_policy_dir = "$dirname/../policies/nx-os";
+# TODO: Change $dirname to $approot(dir)
+my $abs_path = Cwd::abs_path($PROGRAM_NAME);
+my $date     = strftime "%m/%d/%y", localtime;
+my $dirname  = (dir(File::Basename::dirname($abs_path))->parent);
+my $cfgfiles = $dirname->subdir('devices');
+my $policydir = $dirname->subdir('policies');
+my $nxos_policy_dir = $policydir->subdir('nx-os');
 my $config   = '';
-
+my $diff     = "";
 # Command line input
 my ($file) = @ARGV;
 
@@ -45,10 +48,11 @@ open my $FILE, '<', "$cfgfiles/$file" or die "file not found $file $!";
 my $timestamp = strftime "%m/%d/%y", localtime(stat($FILE)->mtime);
 
 # Read configuration into $config
-while (<$FILE>) { $config .= $_ }
+while (<$FILE>) { 
+        $config .= $_;
+}
 close $FILE;
 
-my $diff     = "";
 my $output   = "$file,";
 my @int_list = &interface_list($config);
 
