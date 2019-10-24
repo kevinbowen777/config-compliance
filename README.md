@@ -6,9 +6,9 @@
 
 ## Description #
 
-    A collection of perl scripts that checks local Cisco configuration files
+    A collection of perl scripts that check local Cisco configuration files
 	against user managed policy templates and produces a PASS/FAIL
-	report based upon the defined policies. Here is part of a sample
+	report based upon the defined policies. Here is a portion of a sample
 	report:
 
 ![](images/config-compliance-report_sample.png)
