@@ -1,8 +1,5 @@
 # config-compliance
 
-## Installation #
-
-    git clone git://github.com/kevinbowen777/config-compliance.git
 
 ## Description #
 
@@ -13,7 +10,7 @@
 
 ![](images/config-compliance-report_sample.png)
 
-## Usage #
+### Usage 
 
 Files:
 
@@ -28,6 +25,10 @@ Files:
 	* policycheck_IOS_1.2.1.pl - Parses device.cfg against IOS templates
 	* policycheck_NX-OS_1.2.1.pl - Parses device.cfg against NX-OS templates
 
+### Installation of config-compliance project
 
-## License
+    Master: git clone https://gitlab.com/kevinbowen/config-compliance.git
+    Mirror: git clone https://github.com/kevinbowen777/config-compliance.git
+
+### License
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
